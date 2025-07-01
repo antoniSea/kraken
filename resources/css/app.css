@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Brandon Grotesque';
+  src: url('/fonts/BrandonGrotesque-Regular.woff2') format('woff2'),
+       url('/fonts/BrandonGrotesque-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Brandon Grotesque Black';
+  src: url('/fonts/BrandonGrotesque-Black.woff2') format('woff2'),
+       url('/fonts/BrandonGrotesque-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Brandon Grotesque Medium';
+  src: url('/fonts/BrandonGrotesque-Medium.woff2') format('woff2'),
+       url('/fonts/BrandonGrotesque-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Brandon Grotesque Light';
+  src: url('/fonts/BrandonGrotesque-Light.woff2') format('woff2'),
+       url('/fonts/BrandonGrotesque-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+.font-brandon-grotesque { font-family: 'Brandon Grotesque', sans-serif; }
+.font-brandon-grotesque-black { font-family: 'Brandon Grotesque Black', sans-serif; }
+.font-brandon-grotesque-medium { font-family: 'Brandon Grotesque Medium', sans-serif; }
+.font-brandon-grotesque-light { font-family: 'Brandon Grotesque Light', sans-serif; }
+
+[x-cloak] {
+    display: none;
+}
