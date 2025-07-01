@@ -38,3 +38,56 @@
 [x-cloak] {
     display: none;
 }
+
+.min-h-screen {
+   
+    background-image: url('../images/background2.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+font-family: 'Brandon Grotesque', sans-serif;
+}
+.register-form {
+  border: 4px double #eeee; 
+}
+.register-form input[type="text"],
+.register-form input[type="email"],
+.register-form input[type="password"] {
+    background: #00000054;
+    border: unset;
+    border-radius: 0;
+    border-bottom: 1px solid #ddd;
+
+}
+.register-form input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border-radius: 0;
+    border: 1px solid #494949;
+    background-color: #494949;
+}
+.register-form input[type="checkbox"]:checked {
+    background-color: #0c0c0c;
+    border-color: #ddd;
+}
+.register-form input[type="checkbox"]::before {
+    content: '*';
+    color: red;
+    font-size: 20px;
+    position: relative;
+    top: -15px;
+    left: -10px;
+}
+.register-form input[type="checkbox"]:focus {
+    outline: none;
+    border-color: #000000;
+}
+.register-form button[type="submit"]{
+    background-color: #0c0c0c;
+    color: #ffffff;
+    border: 1px solid #494949;
+    padding: 10px 35px;
+    border-radius: 0;
+    cursor: pointer;
+    text-transform: capitalize;
+}
