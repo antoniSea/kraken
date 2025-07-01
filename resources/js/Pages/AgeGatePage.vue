@@ -17,17 +17,39 @@
         </div>
       </div>
     </div>
+    <CookieBanner v-if="showCookieBanner" @accept="handleAcceptCookies" @decline="handleDeclineCookies" />
   </div>
 </template>
 
 <script setup>
-import { router } from '@inertiajs/vue3';
+import { ref, onMounted } from 'vue';
+import CookieBanner from '@/Components/CookieBanner.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 defineOptions({ layout: AppLayout });
 
+const showCookieBanner = ref(false);
+
+function handleAcceptCookies() {
+  localStorage.setItem('cookieConsent', 'accepted');
+  showCookieBanner.value = false;
+}
+function handleDeclineCookies() {
+  localStorage.setItem('cookieConsent', 'declined');
+  showCookieBanner.value = false;
+}
+
+onMounted(() => {
+  if (!localStorage.getItem('cookieConsent')) {
+    showCookieBanner.value = true;
+  }
+});
+
 function accept() {
-  localStorage.setItem('ageGateAccepted', '1');
-  router.visit('/register');
+  fetch('/age-consent', { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content') } })
+    .then(() => {
+      localStorage.setItem('ageGateAccepted', '1');
+      window.location.href = '/register';
+    });
 }
 function decline() {
   window.location.href = 'https://google.com';

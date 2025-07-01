@@ -8,17 +8,14 @@ defineProps({
 </script>
 
 <template>
-    <Head title="Privacy Policy" />
+    <Head title="Polityka prywatności" />
 
-    <div class="font-sans text-gray-900 antialiased">
-        <div class="pt-4 bg-gray-100">
-            <div class="min-h-screen flex flex-col items-center pt-6 sm:pt-0">
-                <div>
-                    <AuthenticationCardLogo />
-                </div>
-
-                <div class="w-full sm:max-w-2xl mt-6 p-6 bg-white shadow-md overflow-hidden sm:rounded-lg prose" v-html="policy" />
+    <div class="min-h-screen flex flex-col items-center justify-center bg-black bg-opacity-80 font-sans">
+        <div class="w-full max-w-2xl p-8 rounded-lg shadow-lg border border-gray-500 bg-black bg-opacity-80 mt-12">
+            <div class="flex flex-col items-center mb-8">
+                <h2 class="text-3xl font-bold text-center mb-4 text-white mt-4">Polityka prywatności</h2>
             </div>
+            <div class="prose prose-invert text-white max-w-none" v-html="policy" />
         </div>
     </div>
 </template>
