@@ -4,15 +4,15 @@
 
 @font-face {
   font-family: 'Brandon Grotesque';
-  src: url('/fonts/BrandonGrotesque-Regular.woff2') format('woff2'),
-       url('/fonts/BrandonGrotesque-Regular.woff') format('woff');
+  src: url('http://127.0.0.1:8000/Brandon%20Grotesque%20Regular.ttf') format('woff2'),
+       url('http://127.0.0.1:8000/Brandon%20Grotesque%20Regular.ttf') format('woff');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: 'Brandon Grotesque Black';
-  src: url('/fonts/BrandonGrotesque-Black.woff2') format('woff2'),
-       url('/fonts/BrandonGrotesque-Black.woff') format('woff');
+  src: url('http://127.0.0.1:8000/Brandon%20Grotesque%20Regular.ttf') format('woff2'),
+       url('http://127.0.0.1:8000/Brandon%20Grotesque%20Regular.ttf') format('woff');
   font-weight: 900;
   font-style: normal;
 }
@@ -25,8 +25,8 @@
 }
 @font-face {
   font-family: 'Brandon Grotesque Light';
-  src: url('/fonts/BrandonGrotesque-Light.woff2') format('woff2'),
-       url('/fonts/BrandonGrotesque-Light.woff') format('woff');
+  src: url('/Brandon%20Grotesque%20Regular.ttf') format('woff2'),
+       url('/Brandon%20Grotesque%20Regular.ttf') format('woff');
   font-weight: 300;
   font-style: normal;
 }
@@ -39,38 +39,49 @@
     display: none;
 }
 
-.min-h-screen {
-   
+.min-h-screen {   
     background-image: url('../images/background2.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-font-family: 'Brandon Grotesque', sans-serif;
+    font-family: 'Brandon Grotesque', sans-serif;
 }
-.register-form {
+.register-form,
+.login-form 
+{
   border: 4px double #eeee; 
 }
+.login-form input[type="text"],
+.login-form input[type="email"],
+.login-form input[type="password"],
 .register-form input[type="text"],
 .register-form input[type="email"],
-.register-form input[type="password"] {
+.register-form input[type="password"]
+ {
     background: #00000054;
     border: unset;
     border-radius: 0;
     border-bottom: 1px solid #ddd;
-
+    color: #ffffff;
 }
-.register-form input[type="checkbox"] {
+.register-form input[type="checkbox"],
+.login-form input[type="checkbox"] 
+{
     width: 20px;
     height: 20px;
     border-radius: 0;
     border: 1px solid #494949;
     background-color: #494949;
 }
-.register-form input[type="checkbox"]:checked {
+.login-form input[type="checkbox"]:checked,
+.register-form input[type="checkbox"]:checked 
+{
     background-color: #0c0c0c;
     border-color: #ddd;
 }
-.register-form input[type="checkbox"]::before {
+.login-form input[type="checkbox"]::before,
+.register-form input[type="checkbox"]::before 
+{
     content: '*';
     color: red;
     font-size: 20px;
@@ -78,11 +89,15 @@ font-family: 'Brandon Grotesque', sans-serif;
     top: -15px;
     left: -10px;
 }
-.register-form input[type="checkbox"]:focus {
+.login-form input[type="checkbox"]:focus, 
+.register-form input[type="checkbox"]:focus 
+{
     outline: none;
     border-color: #000000;
 }
-.register-form button[type="submit"]{
+.login-form button[type="submit"],
+.register-form button[type="submit"]
+{
     background-color: #0c0c0c;
     color: #ffffff;
     border: 1px solid #494949;
@@ -90,4 +105,11 @@ font-family: 'Brandon Grotesque', sans-serif;
     border-radius: 0;
     cursor: pointer;
     text-transform: capitalize;
+}
+
+
+.flex-column-center {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
