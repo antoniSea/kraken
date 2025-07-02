@@ -62,7 +62,7 @@ Route::post('/admin/users', function (\Illuminate\Http\Request $request) {
     }
     $data = $request->validate([
         'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email',
+        'email' => 'required|email',
         'password' => 'required|string|min:6',
         'is_admin' => 'boolean',
     ]);
@@ -79,7 +79,7 @@ Route::put('/admin/users/{id}', function (\Illuminate\Http\Request $request, $id
     }
     $data = $request->validate([
         'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email,' . $id,
+        'email' => 'required|email',
         'is_admin' => 'boolean',
     ]);
     $u = \App\Models\User::findOrFail($id);
