@@ -53,6 +53,37 @@ class CreateNewUser implements CreatesNewUsers
 
         $password = Str::random(12);
 
+        // Pobierz pierwszy wolny nick
+        $usedNicknames = User::pluck('nickname')->toArray();
+        $allNicknames = [
+            'ObsidianEcho', 'VelarisUmbra', 'NyxCipher', 'CryptWhisper', 'LucentShade',
+            'BlackOmen', 'AbyssWalker', 'NightReaver', 'ShadowWarden', 'NocturnVow',
+            'VoidMarshal', 'DuskEmissary', 'TenebrisSoul', 'AbyssWhisper', "Kraken’s Veil",
+            'Inkbound', 'Nautilusk', 'Deepwake', 'LeviathanEcho', 'DrownedOracle',
+            'MidnightTentacle', 'SirensDepth', 'Voidmariner', 'Abyssaria', 'The Murkmind',
+            'Nautheia', 'Vow of the Drowned', 'Echo of the Ink', 'Tenebraqua', 'Sealed Below',
+            'Thalassyth', 'Inkveil', 'Tentavox', 'Inkshroud', 'The Eighth Seal', 'Cephalore',
+            'SilentTentacle', 'Mirekraken', 'Chtonyca', 'VelvetMire', 'The Mind of Eight',
+            'SableSucker', 'Cephor', 'Inktide', 'Tentavia', 'Suckra', 'Noctopus', 'Umbropod',
+            'Octvex', 'Nautopus', 'Krakeon', 'Tentael', 'Inkrid', 'Tentrox', 'Cephorix',
+            'Noxpod', 'Sublimak', 'Okkra', 'Tentros', 'Inkuul', 'Octher', 'Cephux', 'Kravu',
+            'Suckra', 'Inkz', 'Vextus', 'Tentha', 'Ocula', 'Mykrin', 'Glypha', 'Druvok',
+            'Nykril', 'Detrance', 'Armafire', 'Mirian', 'Aquadarke', 'Omular', 'Tentrah',
+            'Cephalopod', 'DarkInk', 'BlackSab', 'Barbiriane', 'Asienthe', 'Malasger',
+            'Firebons', 'Maktique', 'Simbio', 'Blazebat', 'Maktodus', 'Masaret', 'Pocostem',
+            'Mysticbones', 'Sirois', 'Bethane', 'Miriax', 'XArine', 'Vividmist'
+        ];
+        $nickname = null;
+        foreach ($allNicknames as $nick) {
+            if (!in_array($nick, $usedNicknames)) {
+                $nickname = $nick;
+                break;
+            }
+        }
+        if (!$nickname) {
+            $nickname = 'User' . (User::max('id') + 1);
+        }
+
         $user = User::create([
             'name' => $input['name'],
             'first_name' => $input['first_name'],
@@ -66,6 +97,7 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($password),
             'is_admin' => false,
+            'nickname' => $nickname,
         ]);
 
         Mail::to($user->email)->send(new UserWelcomeMail($user, $password));
