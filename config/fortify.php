@@ -3,7 +3,6 @@
 use Laravel\Fortify\Features;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Fortify Guard
@@ -45,7 +44,7 @@ return [
     |
     */
 
-    'username' => 'email',
+    'username' => 'nickname',
 
     'email' => 'email',
 
@@ -155,5 +154,4 @@ return [
             // 'window' => 0,
         ]),
     ],
-
 ];

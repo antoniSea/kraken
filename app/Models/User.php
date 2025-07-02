@@ -38,6 +38,7 @@ class User extends Authenticatable
         'consent_email',
         'consent_marketing',
         'is_admin',
+        'nickname',
     ];
 
     /**
