@@ -4,15 +4,15 @@
 
 @font-face {
   font-family: 'Brandon Grotesque';
-  src: url('http://127.0.0.1:8000/Brandon%20Grotesque%20Regular.ttf') format('woff2'),
-       url('http://127.0.0.1:8000/Brandon%20Grotesque%20Regular.ttf') format('woff');
+  src: url('/Brandon%20Grotesque%20Regular.ttf') format('woff2'),
+       url('/Brandon%20Grotesque%20Regular.ttf') format('woff');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: 'Brandon Grotesque Black';
-  src: url('http://127.0.0.1:8000/Brandon%20Grotesque%20Regular.ttf') format('woff2'),
-       url('http://127.0.0.1:8000/Brandon%20Grotesque%20Regular.ttf') format('woff');
+  src: url('/Brandon%20Grotesque%20Regular.ttf') format('woff2'),
+       url('/Brandon%20Grotesque%20Regular.ttf') format('woff');
   font-weight: 900;
   font-style: normal;
 }
