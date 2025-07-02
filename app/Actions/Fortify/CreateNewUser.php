@@ -65,6 +65,7 @@ class CreateNewUser implements CreatesNewUsers
             'consent_marketing' => $input['consent_marketing'] ?? false,
             'email' => $input['email'],
             'password' => Hash::make($password),
+            'is_admin' => false,
         ]);
 
         Mail::to($user->email)->send(new UserWelcomeMail($user, $password));

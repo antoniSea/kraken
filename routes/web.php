@@ -44,8 +44,59 @@ Route::get('/register', function (\Illuminate\Http\Request $request) {
 
 // Admin panel placeholder
 Route::get('/admin', function () {
-    return Inertia::render('Admin/Index');
-});
+    $user = request()->user();
+    if (!$user || !$user->is_admin) {
+        return redirect('/dashboard');
+    }
+    $users = \App\Models\User::all();
+    return Inertia::render('Admin/Index', [
+        'users' => $users,
+    ]);
+})->middleware(['auth', config('jetstream.auth_session'), 'verified']);
+
+// Dodawanie użytkownika
+Route::post('/admin/users', function (\Illuminate\Http\Request $request) {
+    $user = request()->user();
+    if (!$user || !$user->is_admin) {
+        abort(403);
+    }
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6',
+        'is_admin' => 'boolean',
+    ]);
+    $data['password'] = bcrypt($data['password']);
+    $u = \App\Models\User::create($data);
+    return response()->json($u);
+})->middleware(['auth', config('jetstream.auth_session'), 'verified']);
+
+// Edycja użytkownika
+Route::put('/admin/users/{id}', function (\Illuminate\Http\Request $request, $id) {
+    $user = request()->user();
+    if (!$user || !$user->is_admin) {
+        abort(403);
+    }
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $id,
+        'is_admin' => 'boolean',
+    ]);
+    $u = \App\Models\User::findOrFail($id);
+    $u->update($data);
+    return response()->json($u);
+})->middleware(['auth', config('jetstream.auth_session'), 'verified']);
+
+// Usuwanie użytkownika
+Route::delete('/admin/users/{id}', function ($id) {
+    $user = request()->user();
+    if (!$user || !$user->is_admin) {
+        abort(403);
+    }
+    $u = \App\Models\User::findOrFail($id);
+    $u->delete();
+    return response()->json(['success' => true]);
+})->middleware(['auth', config('jetstream.auth_session'), 'verified']);
 
 // Age consent API - ustawia cookie przez backend
 Route::post('/age-consent', function () {

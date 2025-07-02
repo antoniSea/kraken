@@ -37,6 +37,7 @@ class User extends Authenticatable
         'consent_personal_data',
         'consent_email',
         'consent_marketing',
+        'is_admin',
     ];
 
     /**
