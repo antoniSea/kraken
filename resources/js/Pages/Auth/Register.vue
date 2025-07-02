@@ -72,11 +72,11 @@ const submit = async () => {
 
     <ConfirmationModal :show="showSuccessModal" @close="showSuccessModal = false">
         <template #title>
-            <div class="text-2xl font-bold text-center">Rejestracja się powiodła</div>
-            <div class="text-xl font-bold text-center text-blue-400 underline mt-2">Może właśnie teraz Cię obserwuję</div>
+            <div class="text-2xl  text-center text-white">Rejestracja się powiodła</div>
+            <div class="text-2xl  text-center mt-2">Może właśnie teraz Cię obserwuję</div>
         </template>
         <template #content>
-            <div class="text-center text-gray-500 italic mt-4">Na podany adres email zostanie wysłany login oraz hasło</div>
+            <div class="text-center text-white italic mt-4">Na podany adres email zostanie wysłany login oraz hasło</div>
         </template>
     </ConfirmationModal>
 

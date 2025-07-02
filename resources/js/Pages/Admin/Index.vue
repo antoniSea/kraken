@@ -12,7 +12,7 @@ defineProps({
         <div class="w-full max-w-3xl p-8 rounded-lg shadow-lg border border-gray-500 bg-black bg-opacity-80 mt-12">
             <h2 class="text-3xl font-bold text-center mb-4 text-white">Panel administracyjny</h2>
             <p class="text-center text-gray-300 mb-8">Zarządzaj użytkownikami serwisu. Tutaj możesz przeglądać, dodawać, edytować i usuwać konta użytkowników.</p>
-            <div class="flex justify-end mb-6">
+            <div class="flex justify-center mb-6">
                 <button class="bg-white text-black font-bold py-2 px-6 rounded hover:bg-gray-200 transition">Dodaj użytkownika</button>
             </div>
             <div class="bg-[#232323] rounded-lg p-6 text-white text-center border border-gray-700">
