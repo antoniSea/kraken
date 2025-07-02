@@ -1,17 +1,17 @@
 <template>
-  <div class="min-h-screen flex flex-col justify-center items-center bg-[#181818] font-brandon-grotesque">
+  <div class="my-5" >
     <div class="flex-1 flex flex-col justify-center items-center w-full">
-      <div class="relative bg-[#181818] border border-[#bcbcbc] rounded-xl max-w-xl w-full px-12 py-12 shadow-xl" style="box-shadow: 0 0 0 4px #181818, 0 0 0 6px #bcbcbc;">
+      <div class="relative  rounded-xl max-w-xl w-full px-12 py-12 shadow-xl"  style=" border: 4px double #fff; ">
         <div class="text-center">
-          <div class="text-white font-brandon-grotesque-black text-4xl md:text-5xl mb-8">Witaj!</div>
+          <div class="text-white font-bold font-brandon-grotesque-black text-4xl md:text-5xl mb-8">Witaj!</div>
           <div class="text-white text-base md:text-lg mb-8">
-            Strona, którą próbujesz odwiedzić, zawiera treści dotyczące napojów alkoholowych.<br>
+            Strona, którą próbujesz odwiedzić, zawiera treści dotyczące napojów alkoholowych. 
             Zgodnie z obowiązującymi przepisami prawa, dostęp do tych treści mogą uzyskać wyłącznie osoby pełnoletnie.
           </div>
-          <div class="text-white font-brandon-grotesque-black text-2xl md:text-3xl mb-8">Czy masz ukończone 18 lat?</div>
+          <div class="text-white font-bold font-brandon-grotesque-black text-2xl md:text-3xl mb-8">Czy masz ukończone 18 lat?</div>
           <div class="flex flex-row justify-center gap-8 mb-6">
-            <button @click="accept" class="w-64 py-3 border border-[#bcbcbc] rounded bg-[#181818] text-white text-base font-brandon-grotesque-medium hover:bg-[#232323] transition">Tak, mam ukończone 18 lat</button>
-            <button @click="decline" class="w-64 py-3 border border-[#bcbcbc] rounded bg-[#181818] text-white text-base font-brandon-grotesque-medium hover:bg-[#232323] transition">Nie, nie mam</button>
+            <button @click="accept" class="w-64 py-3 border border-[#666] rounded bg-[#181818] text-white text-base font-brandon-grotesque-medium hover:bg-[#232323] transition">Tak, mam ukończone 18 lat</button>
+            <button @click="decline" class="w-64 py-3 border border-[#666] rounded bg-[#181818] text-white text-base font-brandon-grotesque-medium hover:bg-[#232323] transition">Nie, nie mam</button>
           </div>
           <a href="/privacy-policy" class="block text-xs text-[#bcbcbc] underline hover:text-white">Polityka prywatności</a>
         </div>
