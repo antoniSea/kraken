@@ -1,7 +1,7 @@
 <template>
-  <div class="my-5" >
+  <div class="my-5 intro-page" >
     <div class="flex-1 flex flex-col justify-center items-center w-full">
-      <div class="relative  rounded-xl max-w-xl w-full px-12 py-12 shadow-xl"  style=" border: 4px double #fff; ">
+      <div class="relative  rounded-xl max-w-4xl w-full px-12 py-12 shadow-xl"  style=" border: 4px double #fff; ">
         <div class="text-center">
           <div class="text-white font-bold font-brandon-grotesque-black text-4xl md:text-5xl mb-8">Witaj!</div>
           <div class="text-white text-base md:text-lg mb-8">
@@ -10,8 +10,8 @@
           </div>
           <div class="text-white font-bold font-brandon-grotesque-black text-2xl md:text-3xl mb-8">Czy masz ukończone 18 lat?</div>
           <div class="flex flex-row justify-center gap-8 mb-6">
-            <button @click="accept" class="w-64 py-3 border border-[#666] rounded bg-[#181818] text-white text-base font-brandon-grotesque-medium hover:bg-[#232323] transition">Tak, mam ukończone 18 lat</button>
-            <button @click="decline" class="w-64 py-3 border border-[#666] rounded bg-[#181818] text-white text-base font-brandon-grotesque-medium hover:bg-[#232323] transition">Nie, nie mam</button>
+            <button @click="accept" class="w-64 py-3 border border-[#666] rounded  text-white text-base font-brandon-grotesque-medium hover:bg-[#232323] transition">Tak, mam ukończone 18 lat</button>
+            <button @click="decline" class="w-64 py-3 border border-[#666] rounded  text-white text-base font-brandon-grotesque-medium hover:bg-[#232323] transition">Nie, nie mam</button>
           </div>
           <a href="/privacy-policy" class="block text-xs text-[#bcbcbc] underline hover:text-white">Polityka prywatności</a>
         </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-50 w-[95vw] max-w-3xl bg-[#3F3F3F] flex items-center px-6 py-4 shadow-lg" style="border-radius:10px 10px 0 0;">
+  <div class="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-50 w-[95vw] max-w-5xl bg-[#3F3F3F] flex items-center px-6 py-4 shadow-lg" style="border-radius:10px 10px 0 0;">
     <span class="mr-4 text-2xl"> 
       <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M46.7954 34.6499C48.4412 34.6499 49.7754 33.3157 49.7754 31.6699C49.7754 30.0241 48.4412 28.6899 46.7954 28.6899C45.1496 28.6899 43.8154 30.0241 43.8154 31.6699C43.8154 33.3157 45.1496 34.6499 46.7954 34.6499Z" fill="black"/>
@@ -18,8 +18,8 @@
     <span class="flex-1 text-xs text-gray-200">
       Używamy plików cookie, aby poprawić jakość przeglądania, wyświetlać reklamy lub treści dostosowane do indywidualnych potrzeb użytkownika oraz analizować ruch na stronie. „Akceptuj wszystkie” oznacza zgodę na wykorzystywanie cookies.
     </span>
-    <button @click="$emit('decline')" class="ml-4 px-6 py-2 border border-[#222] text-white rounded bg-[#222] hover:bg-black">Odrzuć</button>
-    <button @click="$emit('accept')" class="ml-2 px-6 py-2 border border-white text-white rounded bg-[#222] hover:bg-black">Akceptuj</button>
+    <button @click="$emit('decline')" class="ml-4 px-6 py-2 border border-[#222] text-white  bg-[#222] hover:bg-black">Odrzuć</button>
+    <button @click="$emit('accept')" class="ml-2 px-6 py-2 border border-white text-white  bg-[#222] hover:bg-black">Akceptuj</button>
   </div>
 </template>
 
