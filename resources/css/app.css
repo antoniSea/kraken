@@ -113,3 +113,10 @@
     justify-content: center;
     flex-direction: column;
 }
+
+
+.min-h-screen:has(.intro-page) {
+    background-image: unset !important;
+    background-color: #1D1D1D !important;
+    padding-top: 2%;
+}
