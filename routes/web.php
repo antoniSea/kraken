@@ -7,6 +7,7 @@ use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return Inertia::render('AgeGatePage');
@@ -101,4 +102,23 @@ Route::delete('/admin/users/{id}', function ($id) {
 // Age consent API - ustawia cookie przez backend
 Route::post('/age-consent', function () {
     return response()->json(['success' => true])->cookie('ageGateAccepted', '1', 60*24*365, '/');
+});
+
+Route::post('/login', function (Request $request) {
+    $login = $request->input('login');
+    $password = $request->input('password');
+    $remember = $request->boolean('remember');
+
+    $user = \App\Models\User::where('email', $login)
+        ->orWhere('nickname', $login)
+        ->first();
+
+    if ($user && \Illuminate\Support\Facades\Hash::check($password, $user->password)) {
+        Auth::login($user, $remember);
+        return redirect()->intended('/dashboard');
+    }
+
+    return back()->withErrors([
+        'login' => 'Nieprawidłowy login lub hasło.',
+    ]);
 });

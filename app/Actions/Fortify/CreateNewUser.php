@@ -32,7 +32,7 @@ class CreateNewUser implements CreatesNewUsers
             'consent_personal_data' => ['accepted'],
             'consent_email' => ['accepted'],
             'consent_marketing' => ['nullable', 'boolean'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ], [
             'name.required' => 'Imię i nazwisko jest wymagane.',

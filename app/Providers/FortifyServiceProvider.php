@@ -13,6 +13,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Validator;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -35,14 +37,37 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
 
-        RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+        // Logowanie po nicku
+        // Fortify::username(function () {
+        //     return 'nickname';
+        // });
 
+        RateLimiter::for('login', function (Request $request) {
+            $throttleKey = Str::transliterate(Str::lower($request->input('login')).'|'.$request->ip());
             return Limit::perMinute(5)->by($throttleKey);
         });
 
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        });
+
+        // Customizacja logowania: login = email lub nickname
+        Fortify::authenticateUsing(function (Request $request) {
+            $login = $request->input('login');
+            $password = $request->input('password');
+
+            $user = \App\Models\User::where('email', $login)
+                ->orWhere('nickname', $login)
+                ->first();
+
+            if ($user && \Illuminate\Support\Facades\Hash::check($password, $user->password)) {
+                return $user;
+            }
+        });
+
+        // Polskie komunikaty błędów logowania
+        Validator::replacer('email', function ($message, $attribute, $rule, $parameters) {
+            return 'Nieprawidłowy login lub hasło.';
         });
     }
 }

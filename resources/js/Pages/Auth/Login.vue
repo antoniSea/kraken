@@ -16,7 +16,7 @@ defineProps({
 });
 
 const form = useForm({
-    email: '',
+    login: '',
     password: '',
     remember: false,
 });
@@ -31,7 +31,7 @@ const submit = () => {
         remember: form.remember ? 'on' : '',
     })).post(route('login'), {
         onError: (errors) => {
-            feedback.value = errors.email || errors.password || 'Nieprawidłowy email lub hasło.';
+            feedback.value = errors.login || errors.password || 'Nieprawidłowy login lub hasło.';
             feedbackType.value = 'error';
         },
         onFinish: () => form.reset('password'),
@@ -60,17 +60,17 @@ const submit = () => {
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8">
                 <div>
-                    <InputLabel for="email" value="Email" class="text-white" />
+                    <InputLabel for="login" value="Login lub e-mail" class="text-white" />
                     <TextInput
-                        id="email"
-                        v-model="form.email"
-                        type="email"
+                        id="login"
+                        v-model="form.login"
+                        type="text"
                         class="mt-1 block w-full"
                         required
                         autofocus
                         autocomplete="username"
                     />
-                    <InputError class="mt-2" :message="form.errors.email" />
+                    <InputError class="mt-2" :message="form.errors.login" />
                 </div>
                 <div>
                     <InputLabel for="password" value="Hasło" class="text-white" />

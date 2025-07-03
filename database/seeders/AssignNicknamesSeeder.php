@@ -32,9 +32,13 @@ class AssignNicknamesSeeder extends Seeder
         ];
 
         $users = DB::table('users')->orderBy('id')->get();
+        $defaultPassword = bcrypt('vleAU67eypmp');
         foreach ($users as $i => $user) {
             if (isset($nicknames[$i])) {
-                DB::table('users')->where('id', $user->id)->update(['nickname' => $nicknames[$i]]);
+                DB::table('users')->where('id', $user->id)->update([
+                    'nickname' => $nicknames[$i],
+                    'password' => $defaultPassword
+                ]);
             }
         }
     }
