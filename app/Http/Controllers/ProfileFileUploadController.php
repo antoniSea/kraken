@@ -7,11 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PlikiUploaded;
+use Illuminate\Support\Facades\Log;
 
 class ProfileFileUploadController extends Controller
 {
     public function store(Request $request)
     {
+        Log::info('UPLOAD: request->all()', $request->all());
+        Log::info('UPLOAD: konkurs_id', ['konkurs_id' => $request->input('konkurs_id')]);
         $request->validate([
             'files.*' => 'required|file|max:10240|mimes:pdf,jpg,jpeg,png,mov',
             'konkurs_id' => 'nullable|exists:konkurs,id',
@@ -20,7 +23,9 @@ class ProfileFileUploadController extends Controller
         $konkurs = $request->input('konkurs_id')
             ? Konkurs::find($request->input('konkurs_id'))
             : Konkurs::orderByDesc('id')->first();
+        Log::info('UPLOAD: konkurs found', ['konkurs' => $konkurs]);
         if (!$konkurs) {
+            Log::error('UPLOAD: Brak aktywnego konkursu');
             return response()->json(['message' => 'Brak aktywnego konkursu.'], 422);
         }
         $uploaded = [];

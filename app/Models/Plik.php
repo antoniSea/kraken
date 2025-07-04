@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Plik extends Model
 {
     use HasFactory;
+    protected $table = 'plik';
     protected $fillable = ['user_id', 'konkurs_id', 'path', 'original_name', 'size'];
 
     public function user()
