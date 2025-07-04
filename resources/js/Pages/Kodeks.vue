@@ -36,8 +36,8 @@ function next() {
 <template>
   <MainLayout>
     <div class="w-full flex flex-col items-center justify-center min-h-[60vh]">
-      <div class="max-w-xl w-full mx-auto flex flex-col items-center relative rounded-lg px-4 py-8 shadow-lg">
-        <button @click="prev" class="absolute left-0 top-1/2 -translate-y-1/2 rounded-full border border-white/30 bg-transparent hover:bg-white/10 text-white p-2 transition shadow-sm focus:outline-none flex items-center justify-center h-9 w-9 z-10">
+      <div class="max-w-xl w-full mx-auto flex flex-col items-center relative rounded-lg px-10 md:px-16 py-8 shadow-lg">
+        <button @click="prev" class="absolute -left-8 top-1/2 -translate-y-1/2 rounded-full border border-white/30 bg-transparent hover:bg-white/10 text-white p-2 transition shadow-sm focus:outline-none flex items-center justify-center h-9 w-9 z-10">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
         </button>
         <div class="flex-1 flex flex-col items-center justify-center px-2 w-full min-h-[260px]">
@@ -52,7 +52,7 @@ function next() {
             </div>
           </transition>
         </div>
-        <button @click="next" class="absolute right-0 top-1/2 -translate-y-1/2 rounded-full border border-white/30 bg-transparent hover:bg-white/10 text-white p-2 transition shadow-sm focus:outline-none flex items-center justify-center h-9 w-9 z-10">
+        <button @click="next" class="absolute -right-8 top-1/2 -translate-y-1/2 rounded-full border border-white/30 bg-transparent hover:bg-white/10 text-white p-2 transition shadow-sm focus:outline-none flex items-center justify-center h-9 w-9 z-10">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
         </button>
         <div class="flex items-center justify-center gap-2 mt-2 w-full">
