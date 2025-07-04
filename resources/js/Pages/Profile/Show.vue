@@ -10,6 +10,7 @@ const error = ref('');
 const konkursy = ref([]);
 const konkursId = ref(null);
 const activeIdx = ref(null);
+const showConfetti = ref(false);
 
 onMounted(async () => {
   const res = await axios.get('/profile/konkursy');
@@ -34,6 +35,8 @@ async function uploadFiles() {
     await axios.post('/profile/files', form, { headers: { 'Content-Type': 'multipart/form-data' } });
     success.value = true;
     files.value = [];
+    showConfetti.value = true;
+    setTimeout(() => { showConfetti.value = false; }, 1800);
   } catch (e) {
     if (e.response && e.response.data && e.response.data.message && e.response.data.message.includes('konkurs')) {
       error.value = 'Brak aktywnego konkursu. Skontaktuj się z administratorem.';
@@ -95,10 +98,28 @@ function fileIcon(file) {
             <span v-if="!uploading">Wyślij</span>
             <span v-else>Wysyłanie...</span>
           </button>
-          <div v-if="success" class="text-green-400 mt-4">Dziękujemy za wysłanie plików!</div>
+          <transition name="fade">
+            <div v-if="showConfetti" class="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+              <div class="flex flex-col items-center">
+                <svg class="w-24 h-24 text-green-400 animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="#22c55e"/>
+                  <path stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 12l3 3 5-5" />
+                </svg>
+                <span class="text-2xl text-green-300 font-bold mt-4 animate-fade-in">Plik wysłany!</span>
+              </div>
+            </div>
+          </transition>
+          <div v-if="success && !showConfetti" class="text-green-400 mt-4">Dziękujemy za wysłanie plików!</div>
           <div v-if="error" class="text-red-400 mt-4">{{ error }}</div>
         </div>
       </div>
     </div>
   </MainLayout>
 </template>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active { transition: opacity 0.5s; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.animate-fade-in { animation: fade-in 0.8s; }
+</style>

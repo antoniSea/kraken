@@ -1,75 +1,62 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 
-// Carousel logic
-const icons = [
-  'data:image/svg+xml;utf8,<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="%23222222" fill-opacity="0.7" stroke="%23fff" stroke-width="2"/></svg>',
-  'data:image/svg+xml;utf8,<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="%23222222" fill-opacity="0.7" stroke="%23fff" stroke-width="2"/></svg>',
-  'data:image/svg+xml;utf8,<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="%23222222" fill-opacity="0.7" stroke="%23fff" stroke-width="2"/></svg>',
-  'data:image/svg+xml;utf8,<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="%23222222" fill-opacity="0.7" stroke="%23fff" stroke-width="2"/></svg>',
-  'data:image/svg+xml;utf8,<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="%23222222" fill-opacity="0.7" stroke="%23fff" stroke-width="2"/></svg>',
-  'data:image/svg+xml;utf8,<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="%23222222" fill-opacity="0.7" stroke="%23fff" stroke-width="2"/></svg>',
-  'data:image/svg+xml;utf8,<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="%23222222" fill-opacity="0.7" stroke="%23fff" stroke-width="2"/></svg>',
+const slides = [
+  {
+    title: 'Smak',
+    content: [
+      'Twórz nie dla kubków smakowych, lecz dla pamięci. Gość nie przychodzi po drinka. Przychodzi po doświadczenie.',
+      'Nie improwizujesz. Nawet chaos ma swoją recepturę.\nZnasz składniki, które wypływają z otchłani.',
+      'Nie mieszaj Kraken z hałasem. Serwuj w ciszy, bez słów.'
+    ]
+  },
+  {
+    title: 'Testowy slajd',
+    content: [
+      'To jest przykładowy drugi slajd. Możesz tu dodać dowolną treść, np. kolejną zasadę lub cytat.',
+      'Każdy slajd może mieć kilka akapitów, które będą wyświetlane jeden pod drugim.'
+    ]
+  }
 ];
-const visibleCount = 4;
-const startIndex = ref(0);
-const isSliding = ref(false);
-const slideDirection = ref('');
+
+const current = ref(0);
+const direction = ref('right');
 
 function prev() {
-  if (isSliding.value) return;
-  slideDirection.value = 'left';
-  isSliding.value = true;
-  setTimeout(() => {
-    startIndex.value = (startIndex.value - 1 + icons.length) % icons.length;
-    isSliding.value = false;
-  }, 300);
+  direction.value = 'left';
+  current.value = (current.value - 1 + slides.length) % slides.length;
 }
 function next() {
-  if (isSliding.value) return;
-  slideDirection.value = 'right';
-  isSliding.value = true;
-  setTimeout(() => {
-    startIndex.value = (startIndex.value + 1) % icons.length;
-    isSliding.value = false;
-  }, 300);
+  direction.value = 'right';
+  current.value = (current.value + 1) % slides.length;
 }
-const visibleIcons = computed(() => {
-  const arr = [];
-  for (let i = 0; i < visibleCount; i++) {
-    arr.push(icons[(startIndex.value + i) % icons.length]);
-  }
-  return arr;
-});
 </script>
 
 <template>
   <MainLayout>
-    <div class="w-full flex flex-col items-center justify-center min-h-[70vh]">
-      <div class="max-w-2xl w-full mx-auto flex flex-col items-center">
-        <h1 class="font-brandon-grotesque-black text-5xl md:text-6xl text-white mb-10 mt-16 text-center leading-tight">Smak</h1>
-        <div class="text-gray-200 text-lg md:text-2xl font-medium text-center leading-relaxed mb-12 max-w-2xl mx-auto">
-          <p>Twórz nie dla kubków smakowych, lecz dla pamięci. Gość nie przychodzi<br>po drinka. Przychodzi po doświadczenie.</p>
-          <p class="mt-8">Nie improwizujesz. Nawet chaos ma swoją recepturę.<br>Znasz składniki, które wypływają z otchłani.</p>
-          <p class="mt-8">Nie mieszaj Kraken z hałasem. Serwuj w ciszy, bez słów.</p>
+    <div class="w-full flex flex-col items-center justify-center min-h-[60vh]">
+      <div class="max-w-xl w-full mx-auto flex flex-col items-center relative rounded-lg px-4 py-8 shadow-lg">
+        <button @click="prev" class="absolute left-0 top-1/2 -translate-y-1/2 rounded-full border border-white/30 bg-transparent hover:bg-white/10 text-white p-2 transition shadow-sm focus:outline-none flex items-center justify-center h-9 w-9 z-10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+        <div class="flex-1 flex flex-col items-center justify-center px-2 w-full min-h-[260px]">
+          <transition :name="direction === 'right' ? 'slide-right' : 'slide-left'" mode="out-in">
+            <div :key="current" class="w-full">
+              <h1 class="font-brandon-grotesque-black text-3xl md:text-4xl text-white mb-6 text-center leading-tight">{{ slides[current].title }}</h1>
+              <div class="text-gray-200 text-base md:text-lg font-medium text-center leading-relaxed mb-6 max-w-xl mx-auto">
+                <template v-for="(p, i) in slides[current].content" :key="i">
+                  <p class="mb-4 whitespace-pre-line">{{ p }}</p>
+                </template>
+              </div>
+            </div>
+          </transition>
         </div>
-        <!-- Carousel with side arrows -->
-        <div class="flex items-center justify-center w-full max-w-xs mx-auto mt-2 mb-2 gap-2 relative">
-          <button @click="prev" :disabled="isSliding" class="absolute left-[-48px] top-1/2 -translate-y-1/2 rounded-full border border-white/30 bg-transparent hover:bg-white/10 text-white p-2 transition shadow-sm focus:outline-none flex items-center justify-center h-10 w-10 z-10">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-          </button>
-          <div class="flex flex-row gap-4 overflow-hidden relative w-[180px] h-10 mx-auto">
-            <transition-group name="slide" tag="div" class="flex flex-row gap-4 w-full h-full">
-              <img v-for="(icon, idx) in visibleIcons" :key="icon + startIndex" :src="icon" class="h-8 w-8 rounded-full border border-white/20 bg-white/5 object-contain transition-transform duration-300" :class="isSliding ? (slideDirection === 'left' ? 'animate-slide-left' : 'animate-slide-right') : ''" />
-            </transition-group>
-          </div>
-          <button @click="next" :disabled="isSliding" class="absolute right-[-48px] top-1/2 -translate-y-1/2 rounded-full border border-white/30 bg-transparent hover:bg-white/10 text-white p-2 transition shadow-sm focus:outline-none flex items-center justify-center h-10 w-10 z-10">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-          </button>
-        </div>
-        <div class="flex items-center justify-center gap-2 mt-4">
-          <span v-for="n in icons.length" :key="n" :class="[ 'inline-block h-2 w-2 rounded-full', n-1 === startIndex ? 'bg-white' : 'bg-gray-500 opacity-50']"></span>
+        <button @click="next" class="absolute right-0 top-1/2 -translate-y-1/2 rounded-full border border-white/30 bg-transparent hover:bg-white/10 text-white p-2 transition shadow-sm focus:outline-none flex items-center justify-center h-9 w-9 z-10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        </button>
+        <div class="flex items-center justify-center gap-2 mt-2 w-full">
+          <span v-for="(s, i) in slides" :key="i" :class="['inline-block h-2 w-2 rounded-full transition-all', i === current ? 'bg-white' : 'bg-gray-500 opacity-50']"></span>
         </div>
       </div>
     </div>
@@ -77,16 +64,26 @@ const visibleIcons = computed(() => {
 </template>
 
 <style scoped>
-.slide-enter-active, .slide-leave-active {
-  transition: transform 0.3s;
-}
-.slide-enter-from {
-  transform: translateX(100%);
-}
-.slide-leave-to {
-  transform: translateX(-100%);
-}
-.slide-leave-active {
+.slide-right-enter-active, .slide-right-leave-active,
+.slide-left-enter-active, .slide-left-leave-active {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: absolute;
+  width: 100%;
+}
+.slide-right-enter-from {
+  opacity: 0;
+  transform: translateX(60px);
+}
+.slide-right-leave-to {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+.slide-left-enter-from {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+.slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(60px);
 }
 </style> 
