@@ -42,5 +42,7 @@ class DatabaseSeeder extends Seeder
             'consent_email' => true,
             'consent_marketing' => false,
         ]);
+
+        \App\Models\Konkurs::firstOrCreate(['name' => 'Konkurs Główny']);
     }
 }

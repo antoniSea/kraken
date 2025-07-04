@@ -1,0 +1,45 @@
+<?php
+namespace App\Http\Controllers;
+
+use App\Models\Plik;
+use App\Models\Konkurs;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PlikiUploaded;
+
+class ProfileFileUploadController extends Controller
+{
+    public function store(Request $request)
+    {
+        $request->validate([
+            'files.*' => 'required|file|max:10240|mimes:pdf,jpg,jpeg,png,mov',
+            'konkurs_id' => 'nullable|exists:konkurs,id',
+        ]);
+        $user = Auth::user();
+        $konkurs = $request->input('konkurs_id')
+            ? Konkurs::find($request->input('konkurs_id'))
+            : Konkurs::orderByDesc('id')->first();
+        if (!$konkurs) {
+            return response()->json(['message' => 'Brak aktywnego konkursu.'], 422);
+        }
+        $uploaded = [];
+        foreach ($request->file('files', []) as $file) {
+            $path = $file->store('uploads', 'public');
+            $plik = Plik::create([
+                'user_id' => $user->id,
+                'konkurs_id' => $konkurs->id,
+                'path' => $path,
+                'original_name' => $file->getClientOriginalName(),
+                'size' => $file->getSize(),
+            ]);
+            $uploaded[] = $plik;
+        }
+        Mail::to($user->email)->send(new PlikiUploaded($user, $uploaded));
+        return response()->json(['success' => true, 'files' => $uploaded]);
+    }
+
+    public function konkursy() {
+        return response()->json(\App\Models\Konkurs::select('id','name')->get());
+    }
+} 

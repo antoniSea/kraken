@@ -66,7 +66,7 @@ onMounted(() => {
 
         <CookieBanner v-if="showCookieBanner" @accept="handleAcceptCookies" @decline="handleDeclineCookies" />
 
-        <div class="min-h-screen bg-black py-5">
+        <div class="min-h-screen bg-black">
     
 
             <!-- Page Content -->

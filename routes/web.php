@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Actions\Fortify\CreateNewUser;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cookie;
@@ -21,6 +22,17 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+    Route::get('/kodeks', function () {
+        return Inertia::render('Kodeks');
+    })->name('kodeks');
+    Route::get('/regulamin', function () {
+        return Inertia::render('Regulamin');
+    })->name('regulamin');
+    Route::post('/profile/files', [\App\Http\Controllers\ProfileFileUploadController::class, 'store']);
+    Route::get('/profile', function () {
+        return Inertia::render('Profile/Show');
+    })->name('profile');
+    Route::get('/profile/konkursy', [\App\Http\Controllers\ProfileFileUploadController::class, 'konkursy']);
 });
 
 Route::post('/register', function (Request $request) {
@@ -122,3 +134,5 @@ Route::post('/login', function (Request $request) {
         'login' => 'Nieprawidłowy login lub hasło.',
     ]);
 });
+
+Route::get('/admin/users-files', [\App\Http\Controllers\AdminUserFilesController::class, 'index']);
