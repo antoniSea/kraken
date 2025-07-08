@@ -80,7 +80,8 @@ const submit = async () => {
         </template>
     </ConfirmationModal>
 
-    <AuthenticationCard>
+    <div class="w-full flex flex-col items-center justify-center min-h-[70vh]">
+      <AuthenticationCard>
         <template #logo>
             <AuthenticationCardLogo />
         </template>
@@ -168,5 +169,6 @@ const submit = async () => {
                 </Link>
             </div>
         </form>
-    </AuthenticationCard>
+      </AuthenticationCard>
+    </div>
 </template>

@@ -14,8 +14,6 @@ const currentPath = computed(() => usePage().url);
 
 <template>
   <div class="min-h-screen w-full bg-neutral-950 flex flex-col items-center justify-start relative overflow-x-hidden font-brandon-grotesque-medium">
-    <!-- Gradient background (if needed) -->
-    <div class="before:bg-background before:absolute before:inset-0 before:z-[-1] before:bg-no-repeat before:opacity-[0.78] before:[background-position:0px_0px] before:[background-size:100%_100%] before:[content:'']"></div>
     <!-- NAVIGATION -->
     <nav class="w-full max-w-screen-lg mx-auto flex flex-col items-center pt-8 z-10">
       <div class="flex flex-row justify-center items-center gap-x-12 gap-y-2 text-base select-none">

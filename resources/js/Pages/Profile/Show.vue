@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
+import MainLayout from '@/Layouts/MainLayout.vue';
 
 const files = ref([]);
 const uploading = ref(false);
@@ -56,17 +56,30 @@ function fileIcon(file) {
 
 <template>
   <MainLayout>
-    <div class="w-full flex flex-col items-center justify-center min-h-[70vh]">
-      <div class="max-w-2xl w-full mx-auto flex flex-col items-center">
-        <h1 class="font-brandon-grotesque-black text-3xl md:text-4xl text-white mb-8 mt-12 text-center leading-tight">Profil</h1>
-        <!-- Wybór konkursu -->
-        <div v-if="konkursy.length" class="w-full flex justify-center mb-6">
-          <select v-model="konkursId" class="bg-neutral-900 border border-neutral-700 text-white rounded px-4 py-2 text-lg">
-            <option v-for="k in konkursy" :key="k.id" :value="k.id">{{ k.name }}</option>
-          </select>
-        </div>
+    <div class="relative min-h-screen w-full flex flex-col items-center justify-center before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-b before:from-black before:to-neutral-900 before:opacity-80 before:content-['']">
+      <!-- Header zunifikowany -->
+    
+      <!-- Zakładki konkursów - nad boksem bio -->
+      <div v-if="konkursy.length" class="w-full flex flex-wrap justify-center gap-3.5 text-center text-sm text-neutral-500 font-poppins mb-0 z-20">
+        <template v-for="k in konkursy" :key="k.id">
+          <button
+            @click="konkursId = k.id"
+            class="flex items-center justify-center px-10 py-2.5 transition-all duration-150"
+            :class="[
+              konkursId === k.id
+                ? 'bg-neutral-400 text-white'
+                : 'bg-neutral-800 text-neutral-500',
+            ]"
+            style="outline: none; border: none; border-radius: 0; min-width: 120px; font-weight: 500;"
+          >
+            <span class="text-center w-full">{{ k.name }}</span>
+          </button>
+        </template>
+      </div>
+      <!-- Boks bio -->
+      <div class="flex flex-col items-center justify-center rounded-2xl border-2 border-solid border-neutral-800 bg-neutral-900/90 text-[gray] backdrop-blur-md shadow-xl px-6 pt-0 pb-10 max-w-2xl w-full mx-4 relative min-h-[480px]">
         <!-- Sekcja uploadu plików -->
-        <div class="w-full flex flex-col items-center mt-4">
+        <div class="w-full flex flex-col items-center">
           <label class="block w-full cursor-pointer">
             <input type="file" multiple class="hidden" @change="handleFiles" />
             <div class="border-2 border-dashed border-gray-400 rounded-md h-40 flex flex-col items-center justify-center text-gray-400 bg-neutral-900/90 hover:bg-neutral-900/80 transition mb-4 relative">
