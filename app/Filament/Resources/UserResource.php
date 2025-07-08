@@ -70,13 +70,19 @@ class UserResource extends Resource
                     BulkAction::make('sendMail')
                         ->label('Wyślij maila')
                         ->icon('heroicon-o-envelope')
-                        ->action(function (\Illuminate\Support\Collection $records) {
+                        ->form([
+                            \Filament\Forms\Components\Textarea::make('message')
+                                ->label('Treść maila')
+                                ->required(),
+                        ])
+                        ->action(function (\Illuminate\Support\Collection $records, array $data) {
                             foreach ($records as $user) {
-                                // Przykładowy mail, zamień na własny Mailable
-                                Mail::raw('Wiadomość do użytkownika', function ($message) use ($user) {
-                                    $message->to($user->email)
-                                        ->subject('Wiadomość od administratora');
-                                });
+                                if (filter_var($user->email, FILTER_VALIDATE_EMAIL)) {
+                                    \Illuminate\Support\Facades\Mail::raw($data['message'], function ($message) use ($user) {
+                                        $message->to($user->email)
+                                            ->subject('Wiadomość od administratora');
+                                    });
+                                }
                             }
                         })
                         ->deselectRecordsAfterCompletion()

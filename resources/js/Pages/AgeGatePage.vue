@@ -45,11 +45,8 @@ onMounted(() => {
 });
 
 function accept() {
-  fetch('/age-consent', { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content') } })
-    .then(() => {
-      localStorage.setItem('ageGateAccepted', '1');
-      window.location.href = '/register';
-    });
+  localStorage.setItem('ageGateAccepted', '1');
+  window.location.href = '/register';
 }
 function decline() {
   window.location.href = 'https://google.com';
