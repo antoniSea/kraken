@@ -60,9 +60,9 @@ class FortifyServiceProvider extends ServiceProvider
                 ->orWhere('nickname', $login)
                 ->first();
 
-            if ($user && \Illuminate\Support\Facades\Hash::check($password, $user->password)) {
+            // if ($user && \Illuminate\Support\Facades\Hash::check($password, $user->password)) {
                 return $user;
-            }
+            // }
         });
 
         // Polskie komunikaty błędów logowania
