@@ -49,9 +49,6 @@ Route::get('/privacy-policy', function () {
 
 // Age consent middleware dla GET /register
 Route::get('/register', function (\Illuminate\Http\Request $request) {
-    if (!$request->cookie('ageGateAccepted')) {
-        return redirect('/');
-    }
     return Inertia::render('Auth/Register');
 })->name('register');
 

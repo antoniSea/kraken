@@ -46,6 +46,7 @@ onMounted(() => {
 
 function accept() {
   localStorage.setItem('ageGateAccepted', '1');
+  document.cookie = 'ageGateAccepted=1; path=/; max-age=' + 60*60*24*365;
   window.location.href = '/register';
 }
 function decline() {
