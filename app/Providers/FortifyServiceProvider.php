@@ -53,16 +53,16 @@ class FortifyServiceProvider extends ServiceProvider
 
         // Customizacja logowania: login = email lub nickname
         Fortify::authenticateUsing(function (Request $request) {
-            $login = $request->input('login');
+            $login = $request->input('login') ?? $request->input('nickname') ?? $request->input('email');
             $password = $request->input('password');
 
             $user = \App\Models\User::where('email', $login)
                 ->orWhere('nickname', $login)
                 ->first();
 
-            // if ($user && \Illuminate\Support\Facades\Hash::check($password, $user->password)) {
+            if ($user && \Illuminate\Support\Facades\Hash::check($password, $user->password)) {
                 return $user;
-            // }
+            }
         });
 
         // Polskie komunikaty błędów logowania
