@@ -56,9 +56,8 @@ function fileIcon(file) {
 
 <template>
   <MainLayout>
-    <div class="relative min-h-screen w-full flex flex-col items-center justify-center before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-b before:from-black before:to-neutral-900 before:opacity-80 before:content-['']">
+    <div class="w-full flex flex-col items-center justify-center min-h-[70vh]">
       <!-- Header zunifikowany -->
-    
       <!-- Zakładki konkursów - nad boksem bio -->
       <div v-if="konkursy.length" class="w-full flex flex-wrap justify-center gap-3.5 text-center text-sm text-neutral-500 font-poppins mb-0 z-20">
         <template v-for="k in konkursy" :key="k.id">

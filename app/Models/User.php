@@ -74,4 +74,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function pliki()
+    {
+        return $this->hasMany(\App\Models\Plik::class);
+    }
 }
