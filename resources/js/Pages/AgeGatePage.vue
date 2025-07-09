@@ -1,7 +1,7 @@
 <template>
-  <div class="my-5 intro-page" >
-    <div class="flex-1 flex flex-col justify-center items-center w-full">
-      <div class="relative  rounded-xl max-w-4xl w-full px-12 py-12 shadow-xl"  style=" border: 4px double #fff; ">
+  <div class="min-h-screen flex flex-col bg-black font-brandon-grotesque">
+    <div class="flex-1 flex items-center justify-center pt-24 pb-12">
+      <div class="relative rounded-xl max-w-4xl w-full px-12 py-12 shadow-xl" style="border: 4px double #fff;">
         <div class="text-center">
           <div class="text-white font-bold font-brandon-grotesque-black text-4xl md:text-5xl mb-8">Witaj!</div>
           <div class="text-white text-base md:text-lg mb-8">

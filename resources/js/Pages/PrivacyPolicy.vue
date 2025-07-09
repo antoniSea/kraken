@@ -9,13 +9,12 @@ defineProps({
 
 <template>
     <Head title="Polityka prywatności" />
-
-    <div class="min-h-screen flex flex-col items-center justify-center bg-black bg-opacity-80 font-sans">
-        <div class="w-full max-w-2xl p-8 rounded-lg shadow-lg border border-gray-500 bg-black bg-opacity-80 mt-12">
-            <div class="flex flex-col items-center mb-8">
-                <h2 class="text-3xl font-bold text-center mb-4 text-white mt-4">Polityka prywatności</h2>
+    <div class="min-h-screen flex flex-col items-center justify-center bg-black font-brandon-grotesque text-white">
+        <div class="w-full max-w-xl p-8 rounded-lg shadow-lg border border-gray-500 bg-black mt-12 flex flex-col items-center">
+            <div class="mb-8 w-full flex flex-col items-center">
+                <h2 class="font-brandon-grotesque-black text-3xl md:text-4xl text-white mb-4 mt-4 text-center leading-tight">Polityka prywatności</h2>
             </div>
-            <div class="prose prose-invert text-white max-w-none" v-html="policy" />
+            <div class="text-gray-200 text-base md:text-lg font-medium text-center leading-relaxed max-w-xl mx-auto prose prose-invert" v-html="policy" />
         </div>
     </div>
 </template>

@@ -42,7 +42,8 @@ const submit = () => {
 <template>
     <Head title="Log in" />
 
-    <AuthenticationCard>
+    <div class="min-h-screen flex items-center justify-center bg-black font-brandon-grotesque py-20 md:py-32">
+      <AuthenticationCard>
         <template #logo>
             <AuthenticationCardLogo />
         </template>
@@ -55,8 +56,8 @@ const submit = () => {
             {{ feedback }}
         </div>
 
-        <form @submit.prevent="submit" class="login-form p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-8 text-white">Każde wejście głębiej wymaga nowego oddechu</h2>
+        <form @submit.prevent="submit" class="login-form p-8 rounded-lg shadow-lg max-w-2xl w-full mx-auto">
+            <h2 class="font-brandon-grotesque-black text-3xl md:text-4xl text-white mb-8 text-center leading-tight">Każde wejście głębiej wymaga nowego oddechu</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8">
                 <div>
@@ -113,4 +114,5 @@ const submit = () => {
             </div>
         </form>
     </AuthenticationCard>
+    </div>
 </template>
