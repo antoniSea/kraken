@@ -38,7 +38,19 @@ class PlikResource extends Resource
                 TextColumn::make('id')->label('ID')->sortable(),
                 TextColumn::make('user.name')->label('Użytkownik')->sortable()->searchable(),
                 TextColumn::make('konkurs.name')->label('Konkurs')->sortable()->searchable(),
-                TextColumn::make('original_name')->label('Oryginalna nazwa')->searchable(),
+                // Zamiast nazwy pliku wyświetlam miniaturę jeśli to obrazek, w przeciwnym razie nazwę
+                \Filament\Tables\Columns\TextColumn::make('original_name')
+                    ->label('Podgląd / Nazwa')
+                    ->formatStateUsing(function ($state, $record) {
+                        $ext = strtolower(pathinfo($state, PATHINFO_EXTENSION));
+                        $imgExts = ['jpg','jpeg','png','gif','webp'];
+                        if (in_array($ext, $imgExts)) {
+                            $url = '/storage/' . $record->path;
+                            return '<img src="' . $url . '" alt="miniatura" style="max-width:48px;max-height:48px;border-radius:6px;border:1px solid #333;object-fit:cover;" />';
+                        }
+                        return $state;
+                    })
+                    ->html(),
                 TextColumn::make('path')
                     ->label('Plik')
                     ->url(fn($record) => '/storage/' . $record->path, true)
