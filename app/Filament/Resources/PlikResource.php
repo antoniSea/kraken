@@ -21,6 +21,10 @@ class PlikResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Pliki';
+    protected static ?string $modelLabel = 'Plik';
+    protected static ?string $pluralModelLabel = 'Pliki';
+
     public static function form(Form $form): Form
     {
         // Wyłączamy formularz, bo nie można dodawać/edytować pliku w admince
@@ -31,26 +35,26 @@ class PlikResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->sortable(),
-                TextColumn::make('user_id')->sortable(),
-                TextColumn::make('konkurs_id')->sortable(),
-                TextColumn::make('original_name')->searchable(),
+                TextColumn::make('id')->label('ID')->sortable(),
+                TextColumn::make('user_id')->label('Użytkownik')->sortable(),
+                TextColumn::make('konkurs_id')->label('Konkurs')->sortable(),
+                TextColumn::make('original_name')->label('Oryginalna nazwa')->searchable(),
                 TextColumn::make('path')
                     ->label('Plik')
                     ->url(fn($record) => '/storage/' . $record->path, true)
                     ->openUrlInNewTab(),
-                TextColumn::make('size')->sortable(),
-                TextColumn::make('created_at')->dateTime('Y-m-d H:i')->sortable(),
+                TextColumn::make('size')->label('Rozmiar (B)')->sortable(),
+                TextColumn::make('created_at')->label('Data dodania')->dateTime('Y-m-d H:i')->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()->label('Usuń'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->label('Usuń zaznaczone'),
                 ]),
             ]);
     }
@@ -66,7 +70,6 @@ class PlikResource extends Resource
     {
         return [
             'index' => Pages\ListPliks::route('/'),
-            // Usuwamy create i edit, bo nie można dodawać/edytować pliku
         ];
     }
 }

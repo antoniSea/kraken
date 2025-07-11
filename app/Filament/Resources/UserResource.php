@@ -22,22 +22,26 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Użytkownicy';
+    protected static ?string $modelLabel = 'Użytkownik';
+    protected static ?string $pluralModelLabel = 'Użytkownicy';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required(),
-                Forms\Components\TextInput::make('email')->email()->required(),
-                Forms\Components\TextInput::make('nickname'),
-                Forms\Components\TextInput::make('first_name'),
-                Forms\Components\TextInput::make('last_name'),
-                Forms\Components\TextInput::make('phone'),
-                Forms\Components\TextInput::make('city'),
-                Forms\Components\TextInput::make('apartment'),
-                Forms\Components\Toggle::make('consent_personal_data'),
-                Forms\Components\Toggle::make('consent_email'),
-                Forms\Components\Toggle::make('consent_marketing'),
-                Forms\Components\Toggle::make('is_admin'),
+                Forms\Components\TextInput::make('name')->label('Imię i nazwisko')->required(),
+                Forms\Components\TextInput::make('email')->label('E-mail')->email()->required(),
+                Forms\Components\TextInput::make('nickname')->label('Nick'),
+                Forms\Components\TextInput::make('first_name')->label('Imię'),
+                Forms\Components\TextInput::make('last_name')->label('Nazwisko'),
+                Forms\Components\TextInput::make('phone')->label('Telefon'),
+                Forms\Components\TextInput::make('city')->label('Miasto'),
+                Forms\Components\TextInput::make('apartment')->label('Mieszkanie'),
+                Forms\Components\Toggle::make('consent_personal_data')->label('Zgoda na przetwarzanie danych osobowych'),
+                Forms\Components\Toggle::make('consent_email')->label('Zgoda na kontakt e-mail'),
+                Forms\Components\Toggle::make('consent_marketing')->label('Zgoda na marketing'),
+                Forms\Components\Toggle::make('is_admin')->label('Administrator'),
             ]);
     }
 
@@ -45,19 +49,19 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('name')->searchable(),
-                Tables\Columns\TextColumn::make('email')->searchable(),
-                Tables\Columns\TextColumn::make('nickname')->searchable(),
-                Tables\Columns\IconColumn::make('is_admin')->boolean(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime('Y-m-d H:i')->sortable(),
+                Tables\Columns\TextColumn::make('id')->label('ID')->sortable(),
+                Tables\Columns\TextColumn::make('name')->label('Imię i nazwisko')->searchable(),
+                Tables\Columns\TextColumn::make('email')->label('E-mail')->searchable(),
+                Tables\Columns\TextColumn::make('nickname')->label('Nick')->searchable(),
+                Tables\Columns\IconColumn::make('is_admin')->label('Administrator')->boolean(),
+                Tables\Columns\TextColumn::make('created_at')->label('Data utworzenia')->dateTime('Y-m-d H:i')->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->label('Edytuj'),
+                Tables\Actions\DeleteAction::make()->label('Usuń'),
                 Tables\Actions\Action::make('pliki')
                     ->label('Pliki')
                     ->icon('heroicon-o-document')
@@ -66,7 +70,7 @@ class UserResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->label('Usuń zaznaczone'),
                     BulkAction::make('sendMail')
                         ->label('Wyślij maila')
                         ->icon('heroicon-o-envelope')

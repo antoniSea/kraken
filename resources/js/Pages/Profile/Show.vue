@@ -11,6 +11,7 @@ const konkursy = ref([]);
 const konkursId = ref(null);
 const activeIdx = ref(null);
 const showConfetti = ref(false);
+const isDragging = ref(false);
 
 onMounted(async () => {
   const res = await axios.get('/profile/konkursy');
@@ -19,7 +20,8 @@ onMounted(async () => {
 });
 
 function handleFiles(event) {
-  files.value = Array.from(event.target.files);
+  const newFiles = Array.from(event.target.files);
+  files.value = [...files.value, ...newFiles];
 }
 function removeFile(idx) {
   files.value.splice(idx, 1);
@@ -52,6 +54,23 @@ function fileIcon(file) {
   if (file.type.includes('video') || file.name.endsWith('.mov')) return 'mov';
   return 'file';
 }
+function handleDragOver(event) {
+  event.preventDefault();
+  isDragging.value = true;
+}
+function handleDragLeave(event) {
+  event.preventDefault();
+  isDragging.value = false;
+}
+async function handleDrop(event) {
+  event.preventDefault();
+  isDragging.value = false;
+  if (event.dataTransfer && event.dataTransfer.files) {
+    const newFiles = Array.from(event.dataTransfer.files);
+    files.value = [...files.value, ...newFiles];
+    // Usunięto automatyczne wywołanie uploadFiles()
+  }
+}
 </script>
 
 <template>
@@ -81,7 +100,13 @@ function fileIcon(file) {
         <div class="w-full flex flex-col items-center">
           <label class="block w-full cursor-pointer">
             <input type="file" multiple class="hidden" @change="handleFiles" />
-            <div class="border-2 border-dashed border-gray-400 rounded-md h-40 flex flex-col items-center justify-center text-gray-400 bg-neutral-900/90 hover:bg-neutral-900/80 transition mb-4 relative">
+            <div 
+              class="border-2 border-dashed border-gray-400 rounded-md h-40 flex flex-col items-center justify-center text-gray-400 bg-neutral-900/90 hover:bg-neutral-900/80 transition mb-4 relative"
+              :class="{ 'border-blue-400 bg-neutral-800/90': isDragging }"
+              @dragover="handleDragOver"
+              @dragleave="handleDragLeave"
+              @drop="handleDrop"
+            >
               <svg class="w-8 h-8 mb-2 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
               <span class="text-base font-bold text-white"><span class="underline">Kliknij i dodaj plik</span> lub przeciąg go tutaj.</span>
               <span class="text-xs mt-2">Maksymalny rozmiar pliku do 10MB.</span>
