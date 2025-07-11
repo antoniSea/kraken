@@ -137,10 +137,22 @@ async function handleDrop(event) {
                   :class="[activeIdx === idx ? 'border-blue-500 ring-2 ring-blue-500' : 'border-neutral-800', 'hover:border-blue-500 hover:ring-2 hover:ring-blue-500']"
                   @mouseenter="activeIdx = idx" @mouseleave="activeIdx = null">
                 <div class="flex items-center gap-2">
-                  <svg v-if="fileIcon(file) === 'pdf'" class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 2v4a2 2 0 0 0 2 2h4"/></svg>
-                  <svg v-else-if="fileIcon(file) === 'img'" class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                  <svg v-else-if="fileIcon(file) === 'mov'" class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg>
-                  <svg v-else class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+                  <template v-if="fileIcon(file) === 'img'">
+                    <img :src="URL.createObjectURL(file)" alt="miniatura" class="w-12 h-12 object-cover rounded border border-neutral-700" style="max-width:48px;max-height:48px;" />
+                  </template>
+                  <template v-else-if="fileIcon(file) === 'pdf'">
+                    <a :href="URL.createObjectURL(file)" target="_blank" title="Podgląd PDF">
+                      <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 2v4a2 2 0 0 0 2 2h4"/></svg>
+                    </a>
+                  </template>
+                  <template v-else-if="fileIcon(file) === 'mov'">
+                    <a :href="URL.createObjectURL(file)" target="_blank" title="Podgląd video">
+                      <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg>
+                    </a>
+                  </template>
+                  <template v-else>
+                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+                  </template>
                   <span class="text-white truncate max-w-[180px]">{{ file.name }}</span>
                 </div>
                 <button @click="removeFile(idx)" class="text-gray-400 hover:text-red-400 ml-2">
