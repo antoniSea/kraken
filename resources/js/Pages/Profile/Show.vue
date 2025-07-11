@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import MainLayout from '@/Layouts/MainLayout.vue';
 
@@ -19,6 +19,15 @@ onMounted(async () => {
   if (konkursy.value.length) konkursId.value = konkursy.value[0].id;
 });
 
+watch(konkursId, (id) => {
+  const k = konkursy.value.find(k => k.id === id);
+  if (k && k.is_blocked) {
+    error.value = 'Ten konkurs jest zablokowany. Nie można wysyłać plików.';
+  } else {
+    error.value = '';
+  }
+});
+
 function handleFiles(event) {
   const newFiles = Array.from(event.target.files);
   files.value = [...files.value, ...newFiles];
@@ -28,6 +37,11 @@ function removeFile(idx) {
 }
 async function uploadFiles() {
   if (!files.value.length) return;
+  const k = konkursy.value.find(k => k.id === konkursId.value);
+  if (k && k.is_blocked) {
+    error.value = 'Ten konkurs jest zablokowany. Nie można wysyłać plików.';
+    return;
+  }
   uploading.value = true;
   error.value = '';
   const form = new FormData();
@@ -78,19 +92,23 @@ async function handleDrop(event) {
     <div class="w-full flex flex-col items-center justify-center min-h-[70vh]">
       <!-- Header zunifikowany -->
       <!-- Zakładki konkursów - nad boksem bio -->
-      <div v-if="konkursy.length" class="w-full flex flex-wrap justify-center gap-3.5 text-center text-sm text-neutral-500 font-poppins mb-0 z-20">
+      <div v-if="konkursy.length" class="w-full flex flex-wrap justify-center gap-2 text-center text-xs text-neutral-500 font-poppins mb-0 z-20">
         <template v-for="k in konkursy" :key="k.id">
           <button
-            @click="konkursId = k.id"
-            class="flex items-center justify-center px-10 py-2.5 transition-all duration-150"
+            @click="!k.is_blocked && (konkursId = k.id)"
+            class="flex items-center justify-center px-6 py-1.5 transition-all duration-150"
             :class="[
               konkursId === k.id
                 ? 'bg-neutral-400 text-white'
                 : 'bg-neutral-800 text-neutral-500',
+              k.is_blocked ? 'opacity-50 cursor-not-allowed' : ''
             ]"
-            style="outline: none; border: none; border-radius: 0; min-width: 120px; font-weight: 500;"
+            :disabled="k.is_blocked"
+            style="outline: none; border: none; border-radius: 0; min-width: 72px; font-weight: 500; font-size: 0.85rem; height: 32px;"
           >
-            <span class="text-center w-full">{{ k.name }}</span>
+            <span class="text-center w-full flex items-center justify-center gap-1">
+              <span>{{ k.name }}</span>
+            </span>
           </button>
         </template>
       </div>

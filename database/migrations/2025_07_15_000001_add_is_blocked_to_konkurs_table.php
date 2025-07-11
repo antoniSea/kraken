@@ -6,15 +6,14 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('konkurs', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+        Schema::table('konkurs', function (Blueprint $table) {
             $table->boolean('is_blocked')->default(false);
-            $table->timestamps();
         });
     }
     public function down(): void
     {
-        Schema::dropIfExists('konkurs');
+        Schema::table('konkurs', function (Blueprint $table) {
+            $table->dropColumn('is_blocked');
+        });
     }
 }; 

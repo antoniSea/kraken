@@ -4,18 +4,53 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 
 const slides = [
   {
+    title: 'Głos',
+    content: [
+      'Używaj słów oszczędnie. Ale niech zapadają głęboko.'
+    ]
+  },
+  {
+    title: 'Ruch',
+    content: [
+      'Każdy gest to rytuał. Szkło. Butelka. Lód. Rytm ma znaczenie. Nie jesteś dilerem przyjemności. Każdy klient jest intencją, a Ty tworzysz doświadczenie.',
+      'Kontekst. Trunek to nośnik – a twoją misją jest przekaz.'
+    ]
+  },
+  {
     title: 'Smak',
     content: [
       'Twórz nie dla kubków smakowych, lecz dla pamięci. Gość nie przychodzi po drinka. Przychodzi po doświadczenie.',
-      'Nie improwizujesz. Nawet chaos ma swoją recepturę.\nZnasz składniki, które wypływają z otchłani.',
+      'Nie improwizujesz. Nawet chaos ma swoją recepturę.',
+      'Znasz składniki, które wypływają z otchłani.',
       'Nie mieszaj Kraken z hałasem. Serwuj w ciszy, bez słów.'
     ]
   },
   {
-    title: 'Testowy slajd',
+    title: 'Cień',
     content: [
-      'To jest przykładowy drugi slajd. Możesz tu dodać dowolną treść, np. kolejną zasadę lub cytat.',
-      'Każdy slajd może mieć kilka akapitów, które będą wyświetlane jeden pod drugim.'
+      'Nie pokazuj wszystkiego. Tajemnica jest paliwem. Pamiętaj momenty.',
+      'Ilość nie tworzy legendy. Głębia – tak. Lód nie pęka przypadkiem.'
+    ]
+  },
+  {
+    title: 'Obecność',
+    content: [
+      'Nie bądź w centrum. Bądź jak cień przy świecy – nie do pominięcia, ale nieuchwytny.',
+      'Nie pytaj, co podać. Obserwuj. Wybierz. Zaskocz. Dobrze dobrany alkohol mówi więcej niż słowa. Źle dobrany – mówi o tobie.'
+    ]
+  },
+  {
+    title: 'Rytuał',
+    content: [
+      'Miej własne rytuały. Ukryte gesty. Stałe słowa. Powtarzaj je przed każdą zmianą.',
+      'Nie mieszasz składników – mieszasz rzeczywistość.'
+    ]
+  },
+  {
+    title: 'Symbole',
+    content: [
+      'Symbole ukrywasz na wierzchu.',
+      'Układ butelek. Porządek etykiet. Kształt szkła.'
     ]
   }
 ];

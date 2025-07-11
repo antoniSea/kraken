@@ -24,6 +24,7 @@ class KonkursResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->label('Nazwa konkursu')->required(),
+                Forms\Components\Toggle::make('is_blocked')->label('Zablokowany?'),
             ]);
     }
 
@@ -33,6 +34,7 @@ class KonkursResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')->label('ID')->sortable(),
                 Tables\Columns\TextColumn::make('name')->label('Nazwa konkursu')->searchable(),
+                Tables\Columns\IconColumn::make('is_blocked')->label('Zablokowany?')->boolean(),
             ])
             ->filters([
                 //

@@ -28,6 +28,10 @@ class ProfileFileUploadController extends Controller
             Log::error('UPLOAD: Brak aktywnego konkursu');
             return response()->json(['message' => 'Brak aktywnego konkursu.'], 422);
         }
+        if ($konkurs->is_blocked) {
+            Log::error('UPLOAD: Konkurs zablokowany');
+            return response()->json(['message' => 'Konkurs jest zablokowany.'], 422);
+        }
         $uploaded = [];
         foreach ($request->file('files', []) as $file) {
             $path = $file->store('uploads', 'public');
@@ -45,6 +49,6 @@ class ProfileFileUploadController extends Controller
     }
 
     public function konkursy() {
-        return response()->json(\App\Models\Konkurs::select('id','name')->get());
+        return response()->json(\App\Models\Konkurs::select('id','name','is_blocked')->get());
     }
 } 

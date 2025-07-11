@@ -8,7 +8,10 @@ class Konkurs extends Model
 {
     use HasFactory;
     protected $table = 'konkurs';
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'is_blocked'];
+    protected $casts = [
+        'is_blocked' => 'boolean',
+    ];
 
     public function users()
     {
