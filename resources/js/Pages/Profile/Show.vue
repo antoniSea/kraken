@@ -92,11 +92,11 @@ async function handleDrop(event) {
     <div class="w-full flex flex-col items-center justify-center min-h-[70vh]">
       <!-- Header zunifikowany -->
       <!-- Zakładki konkursów - nad boksem bio -->
-      <div v-if="konkursy.length" class="w-full flex flex-wrap justify-center gap-1 text-center text-[10px] text-neutral-500 font-poppins mb-0 z-20">
+      <div v-if="konkursy.length" class="w-full flex flex-wrap justify-center gap-[1.06] text-center text-[10.6px] text-neutral-500 font-poppins mb-0 z-20">
         <template v-for="k in konkursy" :key="k.id">
           <button
             @click="!k.is_blocked && (konkursId = k.id)"
-            class="flex items-center justify-center px-4 py-1 transition-all duration-150"
+            class="flex items-center justify-center px-[4.24px] py-[1.06px] transition-all duration-150"
             :class="[
               konkursId === k.id
                 ? 'bg-neutral-400 text-white'
@@ -104,7 +104,7 @@ async function handleDrop(event) {
               k.is_blocked ? 'opacity-50 cursor-not-allowed' : ''
             ]"
             :disabled="k.is_blocked"
-            style="outline: none; border: none; border-radius: 0; min-width: 54px; font-weight: 500; font-size: 0.65rem; height: 24px;"
+            style="outline: none; border: none; border-radius: 0; min-width: 57px; font-weight: 500; font-size: 0.689rem; height: 25.4px;"
           >
             <span class="text-center w-full flex items-center justify-center gap-1">
               <span>{{ k.name }}</span>

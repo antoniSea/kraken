@@ -36,8 +36,8 @@ class PlikResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->label('ID')->sortable(),
-                TextColumn::make('user_id')->label('Użytkownik')->sortable(),
-                TextColumn::make('konkurs_id')->label('Konkurs')->sortable(),
+                TextColumn::make('user.name')->label('Użytkownik')->sortable()->searchable(),
+                TextColumn::make('konkurs.name')->label('Konkurs')->sortable()->searchable(),
                 TextColumn::make('original_name')->label('Oryginalna nazwa')->searchable(),
                 TextColumn::make('path')
                     ->label('Plik')
@@ -47,7 +47,14 @@ class PlikResource extends Resource
                 TextColumn::make('created_at')->label('Data dodania')->dateTime('Y-m-d H:i')->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('konkurs_id')
+                    ->label('Konkurs')
+                    ->options(fn() => \App\Models\Konkurs::orderBy('name')->pluck('name', 'id')->toArray())
+                    ->searchable(),
+                Tables\Filters\SelectFilter::make('user_id')
+                    ->label('Użytkownik')
+                    ->options(fn() => \App\Models\User::orderBy('name')->pluck('name', 'id')->toArray())
+                    ->searchable(),
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make()->label('Usuń'),
