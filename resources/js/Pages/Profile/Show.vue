@@ -101,7 +101,7 @@ async function handleDrop(event) {
       <!-- Zakładki konkursów - nad boksem bio -->
       <div
         v-if="konkursy.length"
-        class="w-full flex flex-nowrap overflow-x-auto gap-2 text-center text-[15.87px] text-neutral-500 font-poppins mb-0 z-0"
+        class="w-full flex flex-nowrap overflow-x-auto gap-2 text-center text-[15.87px] text-neutral-500 font-poppins mb-0 z-0 lg:flex-wrap lg:overflow-x-visible lg:justify-center"
         style="scrollbar-width: thin; scrollbar-color: #888 #222; padding-bottom: 4px;"
       >
         <template v-for="k in konkursy" :key="k.id">
