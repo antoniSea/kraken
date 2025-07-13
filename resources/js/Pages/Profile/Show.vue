@@ -99,11 +99,11 @@ async function handleDrop(event) {
       <!-- Nowy header z figmy -->
       
       <!-- Zakładki konkursów - nad boksem bio -->
-      <div v-if="konkursy.length" class="w-full flex flex-wrap justify-center gap-2 text-center text-[13.8px] text-neutral-500 font-poppins mb-0 z-0">
+      <div v-if="konkursy.length" class="w-full flex flex-wrap justify-center gap-2 text-center text-[15.87px] text-neutral-500 font-poppins mb-0 z-0">
         <template v-for="k in konkursy" :key="k.id">
           <button
             @click="!k.is_blocked && (konkursId = k.id)"
-            class="flex items-center justify-center px-[6.36px] py-[1.59px] transition-all duration-150"
+            class="flex items-center justify-center px-[7.31px] py-[1.83px] transition-all duration-150"
             :class="[
               konkursId === k.id
                 ? 'bg-neutral-400 text-white'
@@ -111,7 +111,7 @@ async function handleDrop(event) {
               k.is_blocked ? 'opacity-50 cursor-not-allowed' : ''
             ]"
             :disabled="k.is_blocked"
-            style="outline: none; border: none; border-radius: 0; min-width: 85.0px; font-weight: 500; font-size: 0.897rem; height: 35.2px;"
+            style="outline: none; border: none; border-radius: 0; min-width: 97.75px; font-weight: 500; font-size: 1.032rem; height: 40.48px;"
           >
             <span class="text-center w-full flex items-center justify-center gap-1">
               <span>{{ k.name }}</span>
