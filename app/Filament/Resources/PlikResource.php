@@ -14,6 +14,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\FileColumn;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PlikiUploaded;
+use Filament\Notifications\Notification;
 
 class PlikResource extends Resource
 {
@@ -36,7 +41,12 @@ class PlikResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->label('ID')->sortable(),
-                TextColumn::make('user.name')->label('Użytkownik')->sortable()->searchable(),
+                TextColumn::make('user.name')
+                    ->label('Użytkownik')
+                    ->sortable()
+                    ->searchable()
+                    ->url(fn($record) => route('filament.admin.resources.users.edit', $record->user_id))
+                    ->openUrlInNewTab(),
                 TextColumn::make('konkurs.name')->label('Konkurs')->sortable()->searchable(),
                 // Zamiast nazwy pliku wyświetlam miniaturę jeśli to obrazek, w przeciwnym razie nazwę
                 \Filament\Tables\Columns\TextColumn::make('original_name')
@@ -70,10 +80,135 @@ class PlikResource extends Resource
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make()->label('Usuń'),
+                Action::make('addPoints')
+                    ->label('Dodaj punkty')
+                    ->icon('heroicon-o-plus-circle')
+                    ->color('success')
+                    ->form([
+                        Forms\Components\TextInput::make('points')
+                            ->label('Liczba punktów')
+                            ->numeric()
+                            ->required()
+                            ->minValue(1),
+                        Forms\Components\Textarea::make('reason')
+                            ->label('Powód')
+                            ->required()
+                            ->default('Punkty dodane przez administratora'),
+                    ])
+                    ->action(function (Plik $record, array $data): void {
+                        $record->user->addPoints($data['points'], $data['reason']);
+                        
+                        Notification::make()
+                            ->title('Punkty dodane')
+                            ->body("Dodano {$data['points']} punktów użytkownikowi {$record->user->name}")
+                            ->success()
+                            ->send();
+                    }),
+                Action::make('subtractPoints')
+                    ->label('Odejmij punkty')
+                    ->icon('heroicon-o-minus-circle')
+                    ->color('danger')
+                    ->form([
+                        Forms\Components\TextInput::make('points')
+                            ->label('Liczba punktów')
+                            ->numeric()
+                            ->required()
+                            ->minValue(1),
+                        Forms\Components\Textarea::make('reason')
+                            ->label('Powód')
+                            ->required()
+                            ->default('Punkty odjęte przez administratora'),
+                    ])
+                    ->action(function (Plik $record, array $data): void {
+                        $record->user->subtractPoints($data['points'], $data['reason']);
+                        
+                        Notification::make()
+                            ->title('Punkty odjęte')
+                            ->body("Odjęto {$data['points']} punktów użytkownikowi {$record->user->name}")
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()->label('Usuń zaznaczone'),
+                    BulkAction::make('sendEmail')
+                        ->label('Wyślij mail')
+                        ->icon('heroicon-o-envelope')
+                        ->color('info')
+                        ->form([
+                            Forms\Components\TextInput::make('subject')
+                                ->label('Temat')
+                                ->required()
+                                ->default('Dziękujemy za wysłanie plików'),
+                            Forms\Components\Textarea::make('message')
+                                ->label('Wiadomość')
+                                ->required()
+                                ->default('Dziękujemy za przesłanie plików do konkursu.'),
+                        ])
+                        ->action(function (\Illuminate\Support\Collection $records, array $data): void {
+                            // Grupuj pliki według użytkowników
+                            $userFiles = $records->groupBy('user_id');
+                            $sentCount = 0;
+                            $errorCount = 0;
+                            
+                            foreach ($userFiles as $userId => $files) {
+                                $user = \App\Models\User::find($userId);
+                                if ($user && filter_var($user->email, FILTER_VALIDATE_EMAIL)) {
+                                    try {
+                                        Mail::to($user->email)->send(new PlikiUploaded($user, $files, $data['subject'], $data['message']));
+                                        $sentCount++;
+                                    } catch (\Exception $e) {
+                                        $errorCount++;
+                                    }
+                                } else {
+                                    $errorCount++;
+                                }
+                            }
+                            
+                            $message = "Wysłano maile do {$sentCount} użytkowników";
+                            if ($errorCount > 0) {
+                                $message .= " ({$errorCount} błędów - niepoprawne adresy email)";
+                            }
+                            
+                            Notification::make()
+                                ->title('Maile wysłane')
+                                ->body($message)
+                                ->success()
+                                ->send();
+                        }),
+                    BulkAction::make('addPoints')
+                        ->label('Dodaj punkty')
+                        ->icon('heroicon-o-plus-circle')
+                        ->color('success')
+                        ->form([
+                            Forms\Components\TextInput::make('points')
+                                ->label('Liczba punktów')
+                                ->numeric()
+                                ->required()
+                                ->minValue(1),
+                            Forms\Components\Textarea::make('reason')
+                                ->label('Powód')
+                                ->required()
+                                ->default('Punkty dodane przez administratora'),
+                        ])
+                        ->action(function (\Illuminate\Support\Collection $records, array $data): void {
+                            // Grupuj pliki według użytkowników i dodaj punkty tylko raz na użytkownika
+                            $userFiles = $records->groupBy('user_id');
+                            
+                            foreach ($userFiles as $userId => $files) {
+                                $user = \App\Models\User::find($userId);
+                                if ($user) {
+                                    $user->addPoints($data['points'], $data['reason']);
+                                }
+                            }
+                            
+                            Notification::make()
+                                ->title('Punkty dodane')
+                                ->body("Dodano {$data['points']} punktów do {$userFiles->count()} użytkowników")
+                                ->success()
+                                ->send();
+                        }),
                 ]),
             ]);
     }

@@ -12,7 +12,7 @@ import MainLayout from '@/Layouts/MainLayout.vue';
           w półmroku, kryje się coś więcej. Coś głębszego. Ciemniejszego.
         </p>
         <div class="w-full flex justify-center mb-6">
-          <div class="w-24 h-0.5 bg-gray-500 rounded-full" />
+          <div class="w-[300px] h-0.5 bg-gray-500 rounded-full" />
         </div>
         <h2 class="font-brandon-grotesque-black text-lg md:text-xl text-white mb-1 leading-tight">
           To nie szkolenie. To rytuał przebudzenia.<br />
