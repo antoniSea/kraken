@@ -33,6 +33,7 @@ Route::middleware([
         return Inertia::render('Profile/Show');
     })->name('profile');
     Route::get('/profile/konkursy', [\App\Http\Controllers\ProfileFileUploadController::class, 'konkursy']);
+    Route::get('/profile/points', [\App\Http\Controllers\ProfileFileUploadController::class, 'points']);
 });
 
 Route::post('/register', function (Request $request) {

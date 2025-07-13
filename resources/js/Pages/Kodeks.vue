@@ -75,7 +75,7 @@ function next() {
         <button @click="prev" class="absolute -left-8 top-1/2 -translate-y-1/2 rounded-full border border-white/30 bg-transparent hover:bg-white/10 text-white p-2 transition shadow-sm focus:outline-none flex items-center justify-center h-9 w-9 z-10">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
         </button>
-        <div class="flex-1 flex flex-col items-center justify-center px-2 w-full min-h-[260px]">
+        <div class="flex-1 flex flex-col items-center justify-center px-2 w-full min-h-[340px]">
           <transition :name="direction === 'right' ? 'slide-right' : 'slide-left'" mode="out-in">
             <div :key="current" class="w-full">
               <h1 class="font-brandon-grotesque-black text-3xl md:text-4xl text-white mb-6 text-center leading-tight">{{ slides[current].title }}</h1>

@@ -9,10 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\HasPoints;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
+    use HasPoints;
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
@@ -39,6 +41,7 @@ class User extends Authenticatable
         'consent_marketing',
         'is_admin',
         'nickname',
+        'points',
     ];
 
     /**
@@ -78,5 +81,15 @@ class User extends Authenticatable
     public function pliki()
     {
         return $this->hasMany(\App\Models\Plik::class);
+    }
+
+    public function pointsHistory()
+    {
+        return $this->hasMany(\App\Models\PointsHistory::class);
+    }
+
+    public function adminPointsHistory()
+    {
+        return $this->hasMany(\App\Models\PointsHistory::class, 'admin_id');
     }
 }

@@ -12,11 +12,18 @@ const konkursId = ref(null);
 const activeIdx = ref(null);
 const showConfetti = ref(false);
 const isDragging = ref(false);
+const userPoints = ref(0);
 
 onMounted(async () => {
   const res = await axios.get('/profile/konkursy');
   konkursy.value = res.data;
   if (konkursy.value.length) konkursId.value = konkursy.value[0].id;
+  
+  // Pobierz punkty użytkownika
+  const pointsRes = await axios.get('/profile/points');
+  userPoints.value = pointsRes.data.points;
+  
+
 });
 
 watch(konkursId, (id) => {
@@ -63,9 +70,9 @@ async function uploadFiles() {
   uploading.value = false;
 }
 function fileIcon(file) {
-  if (file.type.includes('pdf')) return 'pdf';
-  if (file.type.includes('image')) return 'img';
-  if (file.type.includes('video') || file.name.endsWith('.mov')) return 'mov';
+  if (file.type.startsWith('application/pdf')) return 'pdf';
+  if (file.type.startsWith('image/')) return 'img';
+  if (file.type.startsWith('video/') || file.name.endsWith('.mov')) return 'mov';
   return 'file';
 }
 function handleDragOver(event) {
@@ -82,7 +89,6 @@ async function handleDrop(event) {
   if (event.dataTransfer && event.dataTransfer.files) {
     const newFiles = Array.from(event.dataTransfer.files);
     files.value = [...files.value, ...newFiles];
-    // Usunięto automatyczne wywołanie uploadFiles()
   }
 }
 </script>
@@ -90,9 +96,10 @@ async function handleDrop(event) {
 <template>
   <MainLayout>
     <div class="w-full flex flex-col items-center justify-center min-h-[70vh]">
-      <!-- Header zunifikowany -->
+      <!-- Nowy header z figmy -->
+      
       <!-- Zakładki konkursów - nad boksem bio -->
-      <div v-if="konkursy.length" class="w-full flex flex-wrap justify-center gap-2 text-center text-[13.8px] text-neutral-500 font-poppins mb-0 z-20">
+      <div v-if="konkursy.length" class="w-full flex flex-wrap justify-center gap-2 text-center text-[13.8px] text-neutral-500 font-poppins mb-0 z-0">
         <template v-for="k in konkursy" :key="k.id">
           <button
             @click="!k.is_blocked && (konkursId = k.id)"
@@ -113,11 +120,11 @@ async function handleDrop(event) {
         </template>
       </div>
       <!-- Boks bio -->
-      <div class="flex flex-col items-center justify-center rounded-2xl border-2 border-solid border-neutral-800 bg-neutral-900/90 text-[gray] backdrop-blur-md shadow-xl px-6 pt-0 pb-10 max-w-2xl w-full mx-4 relative min-h-[480px]">
+      <div class="flex flex-col items-center justify-center rounded-2xl border-2 border-solid border-neutral-800 bg-neutral-900/90 text-[gray] w-full lg:w-[800px] backdrop-blur-md shadow-xl px-6 pt-0 pb-10 mx-4 relative" style="background-color: #1D1D1D !important; border: 4px double #fff; padding: 45px;">
         <!-- Sekcja uploadu plików -->
-        <div class="w-full flex flex-col items-center">
+        <div class="w-full flex flex-col items-center" >
           <label class="block w-full cursor-pointer">
-            <input type="file" multiple class="hidden" @change="handleFiles" />
+            <input type="file" multiple accept="image/*,video/*,.pdf,.doc,.docx,.txt" class="hidden" @change="handleFiles" />
             <div 
               class="border-2 border-dashed border-gray-400 rounded-md h-40 flex flex-col items-center justify-center text-gray-400 bg-neutral-900/90 hover:bg-neutral-900/80 transition mb-4 relative"
               :class="{ 'border-blue-400 bg-neutral-800/90': isDragging }"
@@ -133,22 +140,18 @@ async function handleDrop(event) {
           <div v-if="files.length" class="w-full mb-4">
             <ul class="space-y-2">
               <li v-for="(file, idx) in files" :key="file.name"
-                  class="flex items-center justify-between border bg-neutral-950 rounded px-4 py-2 transition-all"
+                  class="flex items-center justify-between border bg-neutral-950 rounded px-4 py-2 transition-all w-[75%] mx-auto"
                   :class="[activeIdx === idx ? 'border-blue-500 ring-2 ring-blue-500' : 'border-neutral-800', 'hover:border-blue-500 hover:ring-2 hover:ring-blue-500']"
                   @mouseenter="activeIdx = idx" @mouseleave="activeIdx = null">
                 <div class="flex items-center gap-2">
                   <template v-if="fileIcon(file) === 'img'">
-                    <img :src="URL.createObjectURL(file)" alt="miniatura" class="w-12 h-12 object-cover rounded border border-neutral-700" style="max-width:48px;max-height:48px;" />
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
                   </template>
                   <template v-else-if="fileIcon(file) === 'pdf'">
-                    <a :href="URL.createObjectURL(file)" target="_blank" title="Podgląd PDF">
-                      <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 2v4a2 2 0 0 0 2 2h4"/></svg>
-                    </a>
+                    <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 2v4a2 2 0 0 0 2 2h4"/></svg>
                   </template>
                   <template v-else-if="fileIcon(file) === 'mov'">
-                    <a :href="URL.createObjectURL(file)" target="_blank" title="Podgląd video">
-                      <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg>
-                    </a>
+                    <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg>
                   </template>
                   <template v-else>
                     <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>

@@ -48,6 +48,12 @@ class ProfileFileUploadController extends Controller
         return response()->json(['success' => true, 'files' => $uploaded]);
     }
 
+    public function points()
+    {
+        $user = Auth::user();
+        return response()->json(['points' => $user->points]);
+    }
+
     public function konkursy() {
         return response()->json(\App\Models\Konkurs::select('id','name','is_blocked')->get());
     }

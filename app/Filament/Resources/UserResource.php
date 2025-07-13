@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Resources\UserResource\RelationManagers\PlikRelationManager;
+use App\Filament\Resources\UserResource\RelationManagers\PointsHistoryRelationManager;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -38,6 +39,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('phone')->label('Telefon'),
                 Forms\Components\TextInput::make('city')->label('Miasto'),
                 Forms\Components\TextInput::make('apartment')->label('Mieszkanie'),
+                Forms\Components\TextInput::make('points')->label('Punkty')->numeric()->default(0),
                 Forms\Components\Toggle::make('consent_personal_data')->label('Zgoda na przetwarzanie danych osobowych'),
                 Forms\Components\Toggle::make('consent_email')->label('Zgoda na kontakt e-mail'),
                 Forms\Components\Toggle::make('consent_marketing')->label('Zgoda na marketing'),
@@ -53,12 +55,36 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label('Imię i nazwisko')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('E-mail')->searchable(),
                 Tables\Columns\TextColumn::make('nickname')->label('Nick')->searchable(),
+                Tables\Columns\TextColumn::make('points')->label('Punkty')->sortable()->badge()->color('success'),
                 Tables\Columns\IconColumn::make('is_admin')->label('Administrator')->boolean(),
                 Tables\Columns\TextColumn::make('created_at')->label('Data utworzenia')->dateTime('Y-m-d H:i')->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('points_range')
+                    ->label('Zakres punktów')
+                    ->form([
+                        \Filament\Forms\Components\TextInput::make('min_points')
+                            ->label('Minimalna liczba punktów')
+                            ->numeric()
+                            ->minValue(0),
+                        \Filament\Forms\Components\TextInput::make('max_points')
+                            ->label('Maksymalna liczba punktów')
+                            ->numeric()
+                            ->minValue(0),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['min_points'],
+                                fn (Builder $query, $minPoints): Builder => $query->where('points', '>=', $minPoints),
+                            )
+                            ->when(
+                                $data['max_points'],
+                                fn (Builder $query, $maxPoints): Builder => $query->where('points', '<=', $maxPoints),
+                            );
+                    }),
             ])
+            ->defaultSort('points', 'desc')
             ->actions([
                 Tables\Actions\EditAction::make()->label('Edytuj'),
                 Tables\Actions\DeleteAction::make()->label('Usuń'),
@@ -66,6 +92,47 @@ class UserResource extends Resource
                     ->label('Pliki')
                     ->icon('heroicon-o-document')
                     ->url(fn($record) => route('filament.admin.resources.users.edit', ['record' => $record->getKey(), 'activeRelationManager' => 'pliki']))
+                    ->openUrlInNewTab(),
+                Tables\Actions\Action::make('addPoints')
+                    ->label('+ Punkty')
+                    ->icon('heroicon-o-plus-circle')
+                    ->color('success')
+                    ->form([
+                        \Filament\Forms\Components\TextInput::make('points')
+                            ->label('Liczba punktów do dodania')
+                            ->numeric()
+                            ->required()
+                            ->minValue(1),
+                        \Filament\Forms\Components\TextInput::make('reason')
+                            ->label('Powód (opcjonalnie)')
+                            ->placeholder('Np. Za aktywność w konkursie'),
+                    ])
+                                            ->action(function ($record, array $data) {
+                            $record->addPoints($data['points'], $data['reason'] ?? 'Punkty dodane przez administratora');
+                        })
+                    ->requiresConfirmation(),
+                                Tables\Actions\Action::make('subtractPoints')
+                    ->label('- Punkty')
+                    ->icon('heroicon-o-minus-circle')
+                    ->color('danger')
+                    ->form([
+                        \Filament\Forms\Components\TextInput::make('points')
+                            ->label('Liczba punktów do odjęcia')
+                            ->numeric()
+                            ->required()
+                            ->minValue(1),
+                        \Filament\Forms\Components\TextInput::make('reason')
+                            ->label('Powód (opcjonalnie)')
+                            ->placeholder('Np. Za naruszenie regulaminu'),
+                    ])
+                                            ->action(function ($record, array $data) {
+                            $record->subtractPoints($data['points'], $data['reason'] ?? 'Punkty odjęte przez administratora');
+                        })
+                    ->requiresConfirmation(),
+                Tables\Actions\Action::make('pointsHistory')
+                    ->label('Historia punktów')
+                    ->icon('heroicon-o-clock')
+                    ->url(fn($record) => route('filament.admin.resources.users.edit', ['record' => $record->getKey(), 'activeRelationManager' => 'pointsHistory']))
                     ->openUrlInNewTab(),
             ])
             ->bulkActions([
@@ -92,6 +159,64 @@ class UserResource extends Resource
                         ->deselectRecordsAfterCompletion()
                         ->requiresConfirmation()
                         ->color('primary'),
+                    BulkAction::make('addPoints')
+                        ->label('Dodaj punkty')
+                        ->icon('heroicon-o-star')
+                        ->form([
+                            \Filament\Forms\Components\TextInput::make('points')
+                                ->label('Liczba punktów do dodania')
+                                ->numeric()
+                                ->required()
+                                ->minValue(1),
+                            \Filament\Forms\Components\TextInput::make('reason')
+                                ->label('Powód (opcjonalnie)')
+                                ->placeholder('Np. Za aktywność w konkursie'),
+                        ])
+                        ->action(function (\Illuminate\Support\Collection $records, array $data) {
+                            foreach ($records as $user) {
+                                $user->addPoints($data['points'], $data['reason'] ?? 'Punkty dodane przez administratora (akcja grupowa)');
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation()
+                        ->color('success'),
+                    BulkAction::make('subtractPoints')
+                        ->label('Odejmij punkty')
+                        ->icon('heroicon-o-minus-circle')
+                        ->form([
+                            \Filament\Forms\Components\TextInput::make('points')
+                                ->label('Liczba punktów do odjęcia')
+                                ->numeric()
+                                ->required()
+                                ->minValue(1),
+                            \Filament\Forms\Components\TextInput::make('reason')
+                                ->label('Powód (opcjonalnie)')
+                                ->placeholder('Np. Za naruszenie regulaminu'),
+                        ])
+                        ->action(function (\Illuminate\Support\Collection $records, array $data) {
+                            foreach ($records as $user) {
+                                $user->subtractPoints($data['points'], $data['reason'] ?? 'Punkty odjęte przez administratora (akcja grupowa)');
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation()
+                        ->color('danger'),
+                    BulkAction::make('resetPoints')
+                        ->label('Resetuj punkty')
+                        ->icon('heroicon-o-arrow-path')
+                        ->form([
+                            \Filament\Forms\Components\TextInput::make('reason')
+                                ->label('Powód resetu (opcjonalnie)')
+                                ->placeholder('Np. Reset po konkursie'),
+                        ])
+                        ->action(function (\Illuminate\Support\Collection $records, array $data) {
+                            foreach ($records as $user) {
+                                $user->resetPoints($data['reason'] ?? 'Reset punktów przez administratora (akcja grupowa)');
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation()
+                        ->color('warning'),
                 ]),
             ]);
     }
@@ -100,6 +225,7 @@ class UserResource extends Resource
     {
         return [
             PlikRelationManager::class,
+            PointsHistoryRelationManager::class,
         ];
     }
 
