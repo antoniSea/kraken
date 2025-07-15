@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-50 w-[95vw] max-w-5xl bg-[#3F3F3F] flex items-center px-6 py-4 shadow-lg" style="border-radius:10px 10px 0 0;">
+  <div class="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-50 w-[95vw] max-w-5xl bg-[#3F3F3F] flex items-center px-6 py-4 shadow-lg mobile-banner" style="border-radius:10px 10px 0 0;">
     <span class="mr-4 text-2xl"> 
       <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M46.7954 34.6499C48.4412 34.6499 49.7754 33.3157 49.7754 31.6699C49.7754 30.0241 48.4412 28.6899 46.7954 28.6899C45.1496 28.6899 43.8154 30.0241 43.8154 31.6699C43.8154 33.3157 45.1496 34.6499 46.7954 34.6499Z" fill="black"/>
@@ -25,3 +25,34 @@
 
 <script setup>
 </script> 
+
+<style scoped>
+@media (max-width: 640px) {
+  .mobile-banner {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 1rem 0.5rem !important;
+    width: 98vw !important;
+    left: 1vw !important;
+    border-radius: 12px 12px 0 0 !important;
+  }
+  .mobile-banner svg {
+    width: 36px !important;
+    height: 36px !important;
+    margin-bottom: 0.5rem;
+  }
+  .mobile-banner .flex-1 {
+    font-size: 0.85rem !important;
+    margin-bottom: 0.75rem;
+    margin-right: 0;
+  }
+  .mobile-banner button {
+    width: 100%;
+    margin-left: 0 !important;
+    margin-bottom: 0.5rem;
+  }
+  .mobile-banner button:last-child {
+    margin-bottom: 0;
+  }
+}
+</style> 
