@@ -32,8 +32,12 @@
     flex-direction: column !important;
     align-items: flex-start !important;
     padding: 1rem 0.5rem !important;
-    width: 98vw !important;
-    left: 1vw !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 auto !important;
+    transform: none !important;
     border-radius: 12px 12px 0 0 !important;
   }
   .mobile-banner svg {
