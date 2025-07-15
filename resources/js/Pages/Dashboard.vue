@@ -30,7 +30,7 @@ import MainLayout from '@/Layouts/MainLayout.vue';
         </p>
         <p class="font-brandon-grotesque-black text-lg md:text-xl text-white">
           <a href="https://www.facebook.com/groups/thelofd" target="_blank" style="text-decoration: underline; font-weight: bold;">
-            TUTAJ
+            tutaj
           </a>
         </p>
 
