@@ -21,9 +21,19 @@ import MainLayout from '@/Layouts/MainLayout.vue';
       </div>
       <div class="mt-12 text-center">
         <h2 class="font-brandon-grotesque-black text-3xl md:text-4xl text-white mb-2">Wejdź.</h2>
+        
+        <p class="font-brandon-grotesque-black text-lg md:text-xl text-white">
+          Szukaj jego śladów.
+        </p>
         <p class="font-brandon-grotesque-black text-lg md:text-xl text-white">
           Ale nie oczekuj, że wyjdziesz taki sam.
         </p>
+        <p class="font-brandon-grotesque-black text-lg md:text-xl text-white">
+          <a href="https://www.facebook.com/groups/thelofd" target="_blank" style="text-decoration: underline; font-weight: bold;">
+            TUTAJ
+          </a>
+        </p>
+
       </div>
     </div>
   </MainLayout>
