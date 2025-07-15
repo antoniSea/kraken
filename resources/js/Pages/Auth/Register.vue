@@ -49,6 +49,10 @@ const submit = async () => {
 
         if (response.ok) {
             showSuccessModal.value = true;
+            setTimeout(() => {
+                showSuccessModal.value = false;
+                window.location.href = '/login?welcome=1';
+            }, 3000);
         } else {
             const data = await response.json();
             feedback.value = 'Nie udało się zarejestrować. Popraw błędy w formularzu.';
@@ -70,7 +74,7 @@ const submit = async () => {
 <template>
     <Head title="Register" />
 
-    <ConfirmationModal :show="showSuccessModal" @close="showSuccessModal = false">
+    <ConfirmationModal :show="showSuccessModal">
         <template #title>
             <div class="text-2xl  text-center text-white">Rejestracja się powiodła</div>
             <div class="text-2xl  text-center mt-2">Może właśnie teraz Cię obserwuję</div>

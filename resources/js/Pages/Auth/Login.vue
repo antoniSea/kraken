@@ -8,7 +8,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import ConfirmationModal from '@/Components/ConfirmationModal.vue';
 
 defineProps({
     canResetPassword: Boolean,
@@ -23,6 +24,14 @@ const form = useForm({
 
 const feedback = ref(null);
 const feedbackType = ref('error');
+const showWelcomeModal = ref(false);
+
+onMounted(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('welcome') === '1') {
+        showWelcomeModal.value = true;
+    }
+});
 
 const submit = () => {
     feedback.value = null;
@@ -41,6 +50,16 @@ const submit = () => {
 
 <template>
     <Head title="Log in" />
+
+    <ConfirmationModal :show="showWelcomeModal" @close="showWelcomeModal = false">
+        <template #title>
+            <div class="text-2xl  text-center text-white">Rejestracja się powiodła</div>
+            <div class="text-2xl  text-center mt-2">Może właśnie teraz Cię obserwuję</div>
+        </template>
+        <template #content>
+            <div class="text-center text-white italic mt-4">Na podany adres email zostanie wysłany login oraz hasło</div>
+        </template>
+    </ConfirmationModal>
 
     <div class="min-h-screen flex items-center justify-center bg-black font-brandon-grotesque py-20 md:py-32">
       <AuthenticationCard>
