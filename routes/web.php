@@ -36,6 +36,20 @@ Route::middleware([
     Route::get('/profile/points', [\App\Http\Controllers\ProfileFileUploadController::class, 'points']);
 });
 
+// Trasy admina
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+    'admin',
+])->group(function () {
+    Route::get('/admin/users-files', [\App\Http\Controllers\AdminUserFilesController::class, 'index']);
+    Route::get('/admin/users', [\App\Http\Controllers\AdminUserController::class, 'index']);
+    Route::post('/admin/users', [\App\Http\Controllers\AdminUserController::class, 'store']);
+    Route::put('/admin/users/{user}', [\App\Http\Controllers\AdminUserController::class, 'update']);
+    Route::delete('/admin/users/{user}', [\App\Http\Controllers\AdminUserController::class, 'destroy']);
+});
+
 Route::post('/register', function (Request $request) {
     app(CreateNewUser::class)->create($request->all());
     return response()->json(['success' => true]);

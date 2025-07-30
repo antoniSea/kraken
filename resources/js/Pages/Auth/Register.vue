@@ -152,7 +152,7 @@ const submit = async () => {
                   </div>
                   <div>
                       <label class="flex items-start text-white">
-                          <Checkbox v-model:checked="form.consent_marketing" class="mt-1" />
+                          <Checkbox v-model:checked="form.consent_marketing" required class="mt-1" />
                           <span class="ml-2 text-xs">
                               Zgoda na przetwarzanie danych w celach marketingowych ...<br/>
                               <span class="text-gray-400">Wyrażam zgodę na przetwarzanie moich danych osobowych przez ... (zgoda dobrowolna, aczkolwiek konieczna, aby wziąć udział w Konkursie)</span>

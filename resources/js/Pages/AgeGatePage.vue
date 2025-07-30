@@ -17,6 +17,24 @@
         </div>
       </div>
     </div>
+    
+    <!-- Modal po zatwierdzeniu wieku -->
+    <div v-if="showAccountModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-[#1a1a1a] rounded-xl max-w-md w-full mx-4 px-8 py-8 shadow-xl border border-[#333]">
+        <div class="text-center">
+          <div class="text-white font-bold font-brandon-grotesque-black text-2xl md:text-3xl mb-6">Masz już konto?</div>
+          <div class="flex flex-col gap-4 mb-6">
+            <button @click="goToLogin" class="w-full py-3 border border-[#666] rounded text-white text-base font-brandon-grotesque-medium hover:bg-[#232323] transition">
+              Login
+            </button>
+            <button @click="goToRegister" class="w-full py-3 border border-[#666] rounded text-white text-base font-brandon-grotesque-medium hover:bg-[#232323] transition">
+              Rejestracja
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <CookieBanner v-if="showCookieBanner" @accept="handleAcceptCookies" @decline="handleDeclineCookies" />
   </div>
 </template>
@@ -28,6 +46,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 defineOptions({ layout: AppLayout });
 
 const showCookieBanner = ref(false);
+const showAccountModal = ref(false);
 
 function handleAcceptCookies() {
   localStorage.setItem('cookieConsent', 'accepted');
@@ -47,10 +66,19 @@ onMounted(() => {
 function accept() {
   localStorage.setItem('ageGateAccepted', '1');
   document.cookie = 'ageGateAccepted=1; path=/; max-age=' + 60*60*24*365;
-  window.location.href = '/register';
+  showAccountModal.value = true;
 }
+
 function decline() {
   window.location.href = 'https://google.com';
+}
+
+function goToLogin() {
+  window.location.href = '/login';
+}
+
+function goToRegister() {
+  window.location.href = '/register';
 }
 </script>
 
