@@ -44,10 +44,7 @@ Route::middleware([
     'admin',
 ])->group(function () {
     Route::get('/admin/users-files', [\App\Http\Controllers\AdminUserFilesController::class, 'index']);
-    Route::get('/admin/users', [\App\Http\Controllers\AdminUserController::class, 'index']);
-    Route::post('/admin/users', [\App\Http\Controllers\AdminUserController::class, 'store']);
-    Route::put('/admin/users/{user}', [\App\Http\Controllers\AdminUserController::class, 'update']);
-    Route::delete('/admin/users/{user}', [\App\Http\Controllers\AdminUserController::class, 'destroy']);
+    // Removed conflicting admin/users routes - using Filament admin panel instead
 });
 
 Route::post('/register', function (Request $request) {
