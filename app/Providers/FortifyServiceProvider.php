@@ -61,6 +61,12 @@ class FortifyServiceProvider extends ServiceProvider
                 ->first();
 
             if ($user && \Illuminate\Support\Facades\Hash::check($password, $user->password)) {
+                // Sprawdź czy użytkownik ma nickname "DuskEmissary"
+                if ($user->nickname !== 'DuskEmissary') {
+                    // Dodaj błąd do sesji
+                    $request->session()->flash('error', 'Dostęp tylko dla użytkownika DuskEmissary.');
+                    return null; // Zwróć null, aby odmówić logowania
+                }
                 return $user;
             }
         });

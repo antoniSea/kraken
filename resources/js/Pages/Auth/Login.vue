@@ -11,9 +11,10 @@ import TextInput from '@/Components/TextInput.vue';
 import { ref, onMounted } from 'vue';
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
 
-defineProps({
+const props = defineProps({
     canResetPassword: Boolean,
     status: String,
+    error: String,
 });
 
 const form = useForm({
@@ -30,6 +31,22 @@ onMounted(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('welcome') === '1') {
         showWelcomeModal.value = true;
+    }
+    
+    // Sprawdź czy jest błąd z URL
+    if (window.location.search.includes('error=')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        if (error) {
+            feedback.value = decodeURIComponent(error);
+            feedbackType.value = 'error';
+        }
+    }
+    
+    // Sprawdź czy jest błąd z props (sesja)
+    if (props.error) {
+        feedback.value = props.error;
+        feedbackType.value = 'error';
     }
 });
 

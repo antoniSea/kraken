@@ -18,6 +18,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    'dusk-emissary',
 ])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
@@ -42,6 +43,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
     'admin',
+    'dusk-emissary',
 ])->group(function () {
     Route::get('/admin/users-files', [\App\Http\Controllers\AdminUserFilesController::class, 'index']);
     // Removed conflicting admin/users routes - using Filament admin panel instead

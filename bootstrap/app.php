@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Rejestracja middleware dla admina
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'dusk-emissary' => \App\Http\Middleware\DuskEmissaryMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
