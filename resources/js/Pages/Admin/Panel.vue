@@ -112,7 +112,7 @@ const userError = ref('');
 
 function fetchUsers() {
   loadingUsers.value = true;
-  axios.get('/admin/users').then(res => {
+  axios.get('/admin/api/users').then(res => {
     users.value = res.data;
   }).catch(() => {
     users.value = [];
@@ -141,12 +141,12 @@ function saveUser() {
   userError.value = '';
   const payload = { name: userForm.name, email: userForm.email, nickname: userForm.nickname };
   if (userForm.id) {
-    axios.put(`/admin/users/${userForm.id}`, payload)
+    axios.put(`/admin/api/users/${userForm.id}`, payload)
       .then(() => { fetchUsers(); closeUserModal(); })
       .catch(e => userError.value = e.response?.data?.message || 'Błąd zapisu')
       .finally(() => userLoading.value = false);
   } else {
-    axios.post('/admin/users', payload)
+    axios.post('/admin/api/users', payload)
       .then(() => { fetchUsers(); closeUserModal(); })
       .catch(e => userError.value = e.response?.data?.message || 'Błąd zapisu')
       .finally(() => userLoading.value = false);
@@ -154,7 +154,7 @@ function saveUser() {
 }
 function deleteUser(user) {
   if (!confirm(`Na pewno usunąć użytkownika ${user.name}?`)) return;
-  axios.delete(`/admin/users/${user.id}`).then(fetchUsers);
+  axios.delete(`/admin/api/users/${user.id}`).then(fetchUsers);
 }
 onMounted(fetchUsers);
 </script>

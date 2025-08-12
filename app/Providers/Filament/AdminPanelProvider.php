@@ -13,6 +13,9 @@ use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use App\Filament\Widgets\PointsOverview;
 use App\Filament\Widgets\PointsLeaderboard;
+use App\Filament\Resources\UserResource;
+use App\Filament\Resources\KonkursResource;
+use App\Filament\Resources\PlikResource;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -35,6 +38,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->resources([
+                UserResource::class,
+                KonkursResource::class,
+                PlikResource::class,
+            ])
             ->pages([
                 Pages\Dashboard::class,
             ])
