@@ -147,7 +147,16 @@ class UserResource extends Resource
                                 ->required(),
                             \Filament\Forms\Components\FileUpload::make('attachment')
                                 ->label('Załącznik')
-                                ->acceptedFileTypes(['pdf', 'doc', 'docx', 'txt', 'jpg', 'jpeg', 'png', 'gif'])
+                                ->mimeTypes([
+                                    'application/pdf',
+                                    'application/msword',
+                                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                    'text/plain',
+                                    'image/jpeg',
+                                    'image/jpg',
+                                    'image/png',
+                                    'image/gif'
+                                ])
                                 ->maxSize(10240) // 10MB max
                                 ->helperText('Maksymalny rozmiar: 10MB. Obsługiwane formaty: PDF, DOC, DOCX, TXT, JPG, PNG, GIF'),
                         ])
