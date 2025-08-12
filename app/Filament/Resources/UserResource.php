@@ -145,20 +145,10 @@ class UserResource extends Resource
                             \Filament\Forms\Components\Textarea::make('message')
                                 ->label('Treść maila')
                                 ->required(),
-                            \Filament\Forms\Components\FileUpload::make('attachment')
+                            Forms\Components\FileUpload::make('attachment')
                                 ->label('Załącznik')
-                                ->mimeTypes([
-                                    'application/pdf',
-                                    'application/msword',
-                                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                                    'text/plain',
-                                    'image/jpeg',
-                                    'image/jpg',
-                                    'image/png',
-                                    'image/gif'
-                                ])
                                 ->maxSize(10240) // 10MB max
-                                ->helperText('Maksymalny rozmiar: 10MB. Obsługiwane formaty: PDF, DOC, DOCX, TXT, JPG, PNG, GIF'),
+                                ->helperText('Maksymalny rozmiar: 10MB'),
                         ])
                         ->action(function (\Illuminate\Support\Collection $records, array $data) {
                             foreach ($records as $user) {
