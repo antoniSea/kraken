@@ -145,13 +145,23 @@ class UserResource extends Resource
                             \Filament\Forms\Components\Textarea::make('message')
                                 ->label('Treść maila')
                                 ->required(),
+                            \Filament\Forms\Components\FileUpload::make('attachment')
+                                ->label('Załącznik')
+                                ->acceptedFileTypes(['pdf', 'doc', 'docx', 'txt', 'jpg', 'jpeg', 'png', 'gif'])
+                                ->maxSize(10240) // 10MB max
+                                ->helperText('Maksymalny rozmiar: 10MB. Obsługiwane formaty: PDF, DOC, DOCX, TXT, JPG, PNG, GIF'),
                         ])
                         ->action(function (\Illuminate\Support\Collection $records, array $data) {
                             foreach ($records as $user) {
                                 if (filter_var($user->email, FILTER_VALIDATE_EMAIL)) {
-                                    \Illuminate\Support\Facades\Mail::raw($data['message'], function ($message) use ($user) {
+                                    \Illuminate\Support\Facades\Mail::raw($data['message'], function ($message) use ($user, $data) {
                                         $message->to($user->email)
                                             ->subject('Wiadomość od administratora');
+                                        
+                                        // Dodaj załącznik jeśli został wybrany
+                                        if (!empty($data['attachment'])) {
+                                            $message->attach(storage_path('app/public/' . $data['attachment']));
+                                        }
                                     });
                                 }
                             }
