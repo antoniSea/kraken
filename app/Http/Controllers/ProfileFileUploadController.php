@@ -16,7 +16,7 @@ class ProfileFileUploadController extends Controller
         Log::info('UPLOAD: request->all()', $request->all());
         Log::info('UPLOAD: konkurs_id', ['konkurs_id' => $request->input('konkurs_id')]);
         $request->validate([
-            'files.*' => 'required|file|max:10240|mimes:pdf,jpg,jpeg,png,mov',
+            'files.*' => 'required|file',
             'konkurs_id' => 'nullable|exists:konkurs,id',
         ]);
         $user = Auth::user();
